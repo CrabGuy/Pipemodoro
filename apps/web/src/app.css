@@ -75,3 +75,7 @@
     --m3c-on-error-container-subtle:        light-dark(#a0536a, #d97d99);
   }
 }
+
+body {
+    margin: 0;
+}
