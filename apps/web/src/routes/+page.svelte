@@ -1,14 +1,20 @@
 <script>
-    import { CircularProgress, CircularProgressEstimate, LinearProgress, LoadingIndicator } from "m3-svelte";
     import { Button, ConnectedButtons } from "m3-svelte";
+    import Timer from "../Timer.svelte"
     const timer_types = ["Pomodoro", "Rest", "Long rest"];
+    
+    const MINUTE = 1000 * 60
+    let timer_duration = $state({
+        "Pomodoro": MINUTE * 1,
+        "Rest": MINUTE * 5,
+        "Long rest": MINUTE * 15,
+    })
+
     let timer_type = $state("Pomodoro")
-    let timer_active = $state(false)
-    let timer_percent = $state(0.1)
-
-    $effect(() => console.log(timer_type))
-
-    setInterval(() => timer_percent = timer_active? (timer_percent + 0.1) % 100 : timer_percent, 1)
+    let active_timers = $state([{
+        started_at: Date.now(),
+        ends_at: Date.now() + 10000,
+    }])
 </script>
 
 <div class="main_container">
@@ -27,16 +33,18 @@
         </ConnectedButtons>
     </div>
     <div class="timer_container">
-        <CircularProgress
-        percent = {timer_percent}
-        thickness = 5
-        ></CircularProgress>
+        {#each active_timers as timer}
+            <Timer started_at={timer.started_at} ends_at={timer.ends_at} ></Timer>
+        {/each}
     </div>
     <div>
         <Button size="l"
-        onclick={() => timer_active = !timer_active}
+        onclick={() => active_timers.push({
+            started_at: Date.now(),
+            ends_at: Date.now() + timer_duration[timer_type]
+        })}
         >
-            {timer_active? "Stop" : "Start"}
+            Start
         </Button>
     </div>
 </div>
