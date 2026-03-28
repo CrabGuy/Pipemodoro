@@ -8,8 +8,8 @@
         started_at: started_at_string,
         ends_at: ends_at_string,
     } = $props()
-    const started_at = $derived(Number(started_at_string))
-    const ends_at = $derived(Number(ends_at_string))
+    const started_at = $derived((new Date(started_at_string)).getTime())
+    const ends_at = $derived((new Date(ends_at_string)).getTime())
     
     const timer_percent = new Tween(0.1, { easing: linear })
     
