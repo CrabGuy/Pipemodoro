@@ -37,8 +37,34 @@
     })
 </script>
 
-<h1>{minutes? minutes + ":" : ""}{seconds}</h1>
-<CircularProgress
-percent = {timer_percent.current}
-thickness = 5
-></CircularProgress>
+<div class="wrapper">
+    <output>
+        <time datetime="PT{hours}H{minutes}M{seconds}S">
+        {hours? hours + ":" : ""}{minutes || "0"}:{seconds}
+        </time>
+    </output>
+    <div class="timer">
+        <CircularProgress
+        percent = {timer_percent.current}
+        thickness = 5
+        ></CircularProgress>
+    </div>
+</div>
+
+<style>
+    .wrapper {
+        display: grid;
+    }
+    
+    output, .timer {
+        grid-area: 1 / 1;
+    }
+
+    output {
+        display: block;
+        font-family: 'Inter', sans-serif;
+        font-size: 3rem;
+        place-self: center;
+        z-index: 1;
+    }
+</style>
