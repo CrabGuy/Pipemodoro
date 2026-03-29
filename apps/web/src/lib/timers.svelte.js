@@ -1,1 +1,1 @@
-export const timer_store = $state({active_timers: []})
+export const timer_store = $state({timers: []})

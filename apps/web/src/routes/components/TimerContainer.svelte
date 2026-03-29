@@ -5,7 +5,7 @@
     import { LoadingIndicator } from "m3-svelte";
     import { timer_store } from "$lib/timers.svelte";
 
-    // cannot use await because it breaks the database sync
+    let active_timers = $derived(timer_store.timers.filter((timer) => !timer.expired))
     let loading = $state(true)
     let channel
 
@@ -14,10 +14,9 @@
         .from("Timers")
         .select("*")
 
-        timer_store.active_timers = (data ?? []).filter((timer) => (new Date(timer.ends_at)).getTime() > Date.now())
+        timer_store.timers = (data ?? []).filter((timer) => (new Date(timer.ends_at)).getTime() > Date.now())
         loading = false
     }
-
 
     onMount(async () => {
         load_timers()
@@ -35,12 +34,13 @@
 </script>
 
 <div class="timer_container">
+    <!-- cannot use await on timer loads because it breaks the database sync -->
     {#if loading}
         <LoadingIndicator></LoadingIndicator>
     {:else}
-        {#if (timer_store.active_timers.length > 0)}
-            {#each timer_store.active_timers as timer}
-                <Timer started_at={timer.created_at} ends_at={timer.ends_at} ></Timer>
+        {#if (active_timers.length > 0)}
+            {#each active_timers as timer}
+                <Timer id={timer.id} ></Timer>
             {/each}
         {:else}
             <div>Show something when there are no timers active</div>

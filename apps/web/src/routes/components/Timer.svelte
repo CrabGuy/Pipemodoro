@@ -3,13 +3,15 @@
     import { Tween } from "svelte/motion";
     import { linear } from "svelte/easing";
     import { SvelteDate } from "svelte/reactivity";
-
+    import { timer_store } from "$lib/timers.svelte";
     const {
-        started_at: started_at_string,
-        ends_at: ends_at_string,
+        id: id,
     } = $props()
-    const started_at = $derived((new Date(started_at_string)).getTime())
-    const ends_at = $derived((new Date(ends_at_string)).getTime())
+    
+    const timer = $derived(timer_store.timers.find((timer) => timer.id == id))
+
+    const started_at = $derived((new Date(timer.created_at)).getTime())
+    const ends_at = $derived((new Date(timer.ends_at)).getTime())
 
     const timer_percent = new Tween(0.1, { easing: linear })
     
@@ -32,25 +34,32 @@
         // still needs to poll because of the time left text
         const interval = setInterval(() => {
             now.setTime(Date.now())
+
+            if (Date.now() > ends_at) {
+                timer.expired = true
+            }
+
         }, 500)
 
         return () => clearInterval(interval)
     })
 </script>
 
-<div class="wrapper">
-    <output>
-        <time datetime="PT{hours}H{minutes}M{seconds}S">
-        {hours? hours + ":" : ""}{minutes || "0"}:{seconds}
-        </time>
-    </output>
-    <div class="timer">
-        <CircularProgress
-        percent = {timer_percent.current}
-        thickness = 5
-        ></CircularProgress>
-    </div>
-</div>
+{#if timer_percent.current < 100}
+    <div class="wrapper">
+        <output>
+            <time datetime="PT{hours}H{minutes}M{seconds}S">
+            {hours? hours + ":" : ""}{minutes || "0"}:{seconds}
+            </time>
+        </output>
+        <div class="timer">
+            <CircularProgress
+            percent = {timer_percent.current}
+            thickness = 5
+            ></CircularProgress>
+        </div>
+    </div>    
+{/if}
 
 <style>
     .wrapper {

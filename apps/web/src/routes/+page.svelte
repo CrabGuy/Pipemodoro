@@ -20,7 +20,7 @@
 
     const MINUTE = 1000 * 60
     let timer_duration = $state({
-        "Pomodoro": MINUTE * 1,
+        "Pomodoro": MINUTE * 2/6,
         "Rest": MINUTE * 5,
         "Long rest": MINUTE * 15,
     })

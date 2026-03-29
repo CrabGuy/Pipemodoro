@@ -5,7 +5,7 @@
     let {timer_duration, timer_type} = $props()
     
     async function add_timer(started_at, ends_at) {
-        timer_store.active_timers.push({
+        timer_store.timers.push({
             created_at: started_at,
             ends_at: ends_at,
         })
