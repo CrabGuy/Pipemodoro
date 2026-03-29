@@ -2,24 +2,29 @@
     import { supabase } from "$lib/supabase_client";
     import { onDestroy, onMount } from "svelte";
     import Timer from "./Timer.svelte";
-    
-    let active_timers = $state([])
+    import { LoadingIndicator } from "m3-svelte";
+    import { timer_store } from "$lib/timers.svelte";
+
+    // cannot use await because it breaks the database sync
+    let loading = $state(true)
     let channel
-    
+
     async function load_timers() {
         const {data} = await supabase
         .from("Timers")
         .select("*")
 
-        active_timers = data ?? []
+        timer_store.active_timers = (data ?? []).filter((timer) => (new Date(timer.ends_at)).getTime() > Date.now())
+        loading = false
     }
-    
+
+
     onMount(async () => {
-        await load_timers()
-        
+        load_timers()
+
         channel = supabase
         .channel("Timers-changes")
-        .on("postgres_changes", { event: '*', schema: 'public', table: 'timers' }, load_timers).subscribe()
+        .on("postgres_changes", { event: '*', schema: 'public', table: 'Timers' }, load_timers).subscribe()
     })
     
     onDestroy(() => {
@@ -30,10 +35,19 @@
 </script>
 
 <div class="timer_container">
-    {#each active_timers as timer}
-        <Timer started_at={timer.started_at} ends_at={timer.ends_at} ></Timer>
-    {/each}
+    {#if loading}
+        <LoadingIndicator></LoadingIndicator>
+    {:else}
+        {#if (timer_store.active_timers.length > 0)}
+            {#each timer_store.active_timers as timer}
+                <Timer started_at={timer.created_at} ends_at={timer.ends_at} ></Timer>
+            {/each}
+        {:else}
+            <div>Show something when there are no timers active</div>
+        {/if}
+    {/if}
 </div>
+
 
 <style>
     .timer_container :global(svg) {

@@ -10,7 +10,7 @@
     } = $props()
     const started_at = $derived((new Date(started_at_string)).getTime())
     const ends_at = $derived((new Date(ends_at_string)).getTime())
-    
+
     const timer_percent = new Tween(0.1, { easing: linear })
     
     const total_duration = $derived(ends_at - started_at)
@@ -24,15 +24,16 @@
     const seconds = $derived(Math.floor((milliseconds / 1000) % 60));
     const minutes = $derived(Math.floor((milliseconds / 1000 / 60) % 60));
     const hours   = $derived(Math.floor(milliseconds / 1000 / 60 / 60));
-
+    
     $effect(() => {
         timer_percent.set(percentage_done, { duration: 0 })
         timer_percent.set(100, { duration: ends_at - Date.now(), easing: linear })
 
+        // still needs to poll because of the time left text
         const interval = setInterval(() => {
             now.setTime(Date.now())
         }, 500)
-        
+
         return () => clearInterval(interval)
     })
 </script>

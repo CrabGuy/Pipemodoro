@@ -4,9 +4,9 @@ The frontend uses [Svelte](https://svelte.dev/) as a framework, [Inter](https://
 - [x] One timer
 - [x] Multiple timers
 - [x] Login section
+- [x] Change timers based on backend
 - [ ] Labels section
 - [ ] Webhook section
-- [ ] Change timers based on backend
 
 ## Libraries used
 - [m3 svelte](https://kendell.dev/m3-svelte/) for the design system

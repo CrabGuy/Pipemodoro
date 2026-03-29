@@ -4,17 +4,18 @@
     import StartButton from "./components/StartButton.svelte";
     import PomodoroTypeSelector from "./components/PomodoroTypeSelector.svelte";
     import TimerContainer from "./components/TimerContainer.svelte";
+    import { supabase } from "$lib/supabase_client";
 
     import { user } from "$lib/auth";
     import { onMount } from "svelte";
 
     onMount(() => {
-        const unsubscribe = user.subscribe((u) => {
-            if (!u) {
-                goto("/login")
+        const unsubscribe = user.subscribe(async (user) => {
+            if (user !== undefined && !user?.id) {
+                goto('/login');
             }
-        })
-        return unsubscribe    
+        });
+        return unsubscribe;
     })
 
     const MINUTE = 1000 * 60
@@ -29,7 +30,7 @@
 </script>
 
 <div style="position:fixed; top:1rem; right:1rem">
-    <Button onclick={() => goto("/login")}>Login</Button>
+    <Button onclick={() => {supabase.auth.signOut(); goto("/login")}}>Logout</Button>
 </div>
 
 <div class="main_container">
@@ -48,6 +49,4 @@
         width: 100vw;
         height: 100vh;
     }
-
-
 </style>
