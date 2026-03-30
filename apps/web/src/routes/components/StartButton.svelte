@@ -16,7 +16,6 @@
             ends_at: ends_at,
             uuid: user.id,
         })
-
     }
 </script>
 
