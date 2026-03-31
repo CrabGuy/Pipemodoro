@@ -5,7 +5,7 @@
     import { LoadingIndicator } from "m3-svelte";
     import { timer_store } from "$lib/timers.svelte";
 
-    let active_timers = $derived(timer_store.timers.filter((timer) => !timer.expired))
+    let active_timers = $derived(timer_store.timers.filter((timer) => !timer.expired && !timer.canceled))
     let loading = $state(true)
     let channel
 
