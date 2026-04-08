@@ -50,10 +50,11 @@
     })
 
     async function cancel_timer() {
+        timer.canceled = true
+
         if (!id) {
             console.log("Isnt synced yet");
             canceled_timers.add(timer.client_timer_id)
-            timer.canceled = true
             return
         }
 
