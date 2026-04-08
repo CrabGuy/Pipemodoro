@@ -15,8 +15,6 @@
 
     $effect(() => {
         timer_store.timers.forEach((timer) => {
-            //! TODO: This is called multiple times per timer, make sure it doesnt create more timer than it needs to
-            console.log("THIS HAPPENED");
             if (canceled_timers.has(timer.client_timer_id) && timer.id && !timer.canceled) {
                 cancel_timer(timer.id)
             }
