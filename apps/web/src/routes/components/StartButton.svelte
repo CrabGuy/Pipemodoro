@@ -5,10 +5,9 @@
     let {timer_duration, timer_type} = $props()
     
     async function add_timer(started_at, ends_at) {
-        throw new Error("generate a unique client uuid for timers and add it to the canceled timers set")
-        const timer_client_id = 0
+        const client_timer_id = crypto.randomUUID()
         timer_store.timers.push({
-            timer_client_id: timer_client_id,
+            client_timer_id: client_timer_id,
             created_at: started_at,
             ends_at: ends_at,
         })
@@ -18,7 +17,8 @@
             created_at: started_at,
             ends_at: ends_at,
             uuid: user.id,
-            timer_client_id: timer_client_id,
+            client_timer_id: client_timer_id,
+            canceled: false,
         })
     }
 </script>

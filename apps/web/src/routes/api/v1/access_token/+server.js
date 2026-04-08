@@ -1,7 +1,7 @@
 import { supabase } from "$lib/supabase_client";
 import { json } from "@sveltejs/kit";
 
-
+//! TODO: Add a way to refresh the validity of the token
 export const POST = async ({request}) => {
     const {email, password} = await request.json()
 

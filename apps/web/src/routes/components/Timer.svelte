@@ -51,10 +51,11 @@
 
     async function cancel_timer() {
         if (!id) {
+            console.log("Isnt synced yet");
+            canceled_timers.add(timer.client_timer_id)
+            timer.canceled = true
             return
         }
-
-        timer.canceled = true
 
         const {data, error} = await supabase.from("Timers")
         .update({canceled: true})
