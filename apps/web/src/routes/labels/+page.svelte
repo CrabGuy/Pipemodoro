@@ -1,2 +1,9 @@
 <!-- //! TODO: Make a labels page -->
-<h1>Hello world!</h1>
+
+<script>
+    import { Button } from "m3-svelte";
+</script>
+
+<div>Labels:</div>
+
+<Button></Button>

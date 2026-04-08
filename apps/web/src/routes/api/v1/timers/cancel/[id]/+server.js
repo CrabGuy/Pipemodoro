@@ -1,11 +1,9 @@
 import { supabase } from "$lib/supabase_client";
 import { fail, json } from "@sveltejs/kit";
 
-export const POST = async ({request}) => {
-    const {timer_id} = await request.json()
+export const POST = async ({params}) => {
+    const timer_id = params.id
 
-    const {data: {user}} = await supabase.auth.getUser()
-    
     const {error} = await supabase.from("Timers")
     .update({canceled: true})
     .eq("id", timer_id)
