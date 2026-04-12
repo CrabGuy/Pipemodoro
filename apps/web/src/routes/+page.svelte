@@ -34,9 +34,11 @@
 
     async function load_timers() {
         console.log("Loading");
-        
-        //! TODO: This doesnt work because it doesnt fetch properly
+
+        //! TODO: This should now work properly but it acts strange (prints a lot of times) and also change it so it only displays one timer
         const {data} = await (await fetch("/api/v1/timers")).json()
+        console.log("Loaded");
+        console.log(data);
 
         timer_store.timers = data ?? []
         loading = false

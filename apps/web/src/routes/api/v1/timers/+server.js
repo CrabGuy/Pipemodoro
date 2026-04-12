@@ -1,9 +1,13 @@
-import { supabase } from "$lib/supabase_client";
 import { json } from "@sveltejs/kit";
 
-export const GET = async ({locals}) => {
-    const {data: {user}} = await locals.supabase.auth.getUser()
-    const timers = await supabase.from("Timers").select("*")
+export const GET = async ({ locals, request }) => {
+    if (!locals.user) {
+        return json({ error: 'Unauthorized' }, { status: 401 });
+    }
 
-    return json(timers)
+    const { data, error } = await locals.supabase
+        .from('Timers')
+        .select('*')
+    
+    return json({ user_id: locals.user.id, data, error })
 }
