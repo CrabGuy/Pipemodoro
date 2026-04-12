@@ -11,9 +11,10 @@
     import { user } from "$lib/auth";
     import { onMount, onDestroy } from "svelte";
     import Timer from "./components/Timer.svelte";
-    
+
     function is_active(timer) {
-        return !timer.expired
+        return ((new Date(timer.ends_at)).getTime() >= Date.now())
+        && !timer.expired
         && !timer.canceled
         && !canceled_timers.has(timer.client_timer_id)
     }
@@ -35,10 +36,9 @@
     async function load_timers() {
         console.log("Loading");
 
-        //! TODO: This should now work properly but it acts strange (prints a lot of times) and also change it so it only displays one timer
         const {data} = await (await fetch("/api/v1/timers")).json()
+        
         console.log("Loaded");
-        console.log(data);
 
         timer_store.timers = data ?? []
         loading = false
@@ -92,7 +92,7 @@
             <LoadingIndicator></LoadingIndicator>
         </div>
     {:else if active_timers.length > 0}
-        <Timer timer={active_timers[0]}></Timer>
+        <Timer bind:timer={active_timers[0]}></Timer>
     {:else}
         <LabelSelection bind:labels></LabelSelection>
         <Timer still timer={{created_at: 0, ends_at: timer_duration[timer_type]}} ></Timer>
