@@ -5,6 +5,7 @@
     import { linear } from "svelte/easing";
     import { SvelteDate } from "svelte/reactivity";
     import { timer_store, canceled_timers } from "$lib/timers.svelte";
+
     const {timer, still} = $props()
 
     const started_at = $derived((new Date(timer.created_at)).getTime())
@@ -52,7 +53,7 @@
 
 <div class="wrapper">
     {#if timer.id}
-        <Button onclick={() => {fetch(`/api/v1/timers/cancel/${timer.id}`, {method: "POST"})}}>Cancel</Button>
+        <Button onclick={() => {canceled_timers.add(timer.client_timer_id)}}>Cancel</Button>
     {/if}
     <output>
         <time datetime="PT{hours}H{minutes}M{seconds}S">

@@ -21,11 +21,12 @@
 
     let active_timers = $derived(timer_store.timers.filter(is_active))
     $inspect(active_timers)
+    $inspect(canceled_timers)
 
     $effect(() => {
         timer_store.timers.forEach((timer) => {
             if (canceled_timers.has(timer.client_timer_id) && timer.id && !timer.canceled) {
-                cancel_timer(timer.id)
+                fetch(`/api/v1/timers/cancel/${timer.id}`, {method: "POST"})
             }
         })
     })
@@ -76,7 +77,6 @@
     const timer_types = Object.keys(timer_duration);
     let timer_type = $state("Pomodoro")
     let labels = $state([])
-    
 </script>
 
 <div style="position:fixed; top:1rem; right:1rem">
@@ -92,7 +92,7 @@
             <LoadingIndicator></LoadingIndicator>
         </div>
     {:else if active_timers.length > 0}
-        <Timer bind:timer={active_timers[0]}></Timer>
+        <Timer timer={active_timers[0]}></Timer>
     {:else}
         <LabelSelection bind:labels></LabelSelection>
         <Timer still timer={{created_at: 0, ends_at: timer_duration[timer_type]}} ></Timer>
