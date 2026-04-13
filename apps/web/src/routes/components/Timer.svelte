@@ -52,7 +52,7 @@
 </script>
 
 <div class="wrapper">
-    {#if timer.id}
+    {#if !still}
         <Button onclick={() => {canceled_timers.add(timer.client_timer_id)}}>Cancel</Button>
     {/if}
     <output>
