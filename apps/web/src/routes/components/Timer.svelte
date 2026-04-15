@@ -4,27 +4,26 @@
     import { Tween } from "svelte/motion";
     import { linear } from "svelte/easing";
     import { SvelteDate } from "svelte/reactivity";
-    import { timer_store, canceled_timers } from "$lib/timers.svelte";
+    import { cancel_timer } from "$lib/timers.svelte";
 
     const {timer, still} = $props()
 
-    const started_at = $derived((new Date(timer.created_at)).getTime())
+    const created_at = $derived((new Date(timer.created_at)).getTime())
     const ends_at = $derived((new Date(timer.ends_at)).getTime())
 
     const timer_percent = new Tween(0.1, { easing: linear })
 
-    const total_duration = $derived(ends_at - started_at)
+    const total_duration = $derived(ends_at - created_at)
 
-    const passed_duration = $derived(Date.now() - started_at)
+    const passed_duration = $derived(Date.now() - created_at)
     const percentage_done = $derived(Math.max((passed_duration / total_duration) * 100, 0.1))
     
     const now = new SvelteDate(Date.now())
-    
-    const milliseconds = $derived(still? ends_at - started_at : Math.max(0, ends_at - now.getTime()))
-    
-    const seconds = $derived(Math.floor((milliseconds / 1000) % 60));
-    const minutes = $derived(Math.floor((milliseconds / 1000 / 60) % 60));
-    const hours   = $derived(Math.floor(milliseconds / 1000 / 60 / 60));
+
+    const seconds = $derived(still? ends_at - created_at : Math.floor(Math.max(0, ends_at - now.getTime()) / 1000))
+
+    const minutes = $derived(Math.floor((seconds / 60) % 60));
+    const hours = $derived(Math.floor(seconds / 60 / 60));
 
     $effect(() => {
         if (still) {
@@ -53,11 +52,11 @@
 
 <div class="wrapper">
     {#if !still}
-        <Button onclick={() => {canceled_timers.add(timer.client_timer_id)}}>Cancel</Button>
+        <Button onclick={() => {cancel_timer(timer.client_timer_id)}}>Cancel</Button>
     {/if}
     <output>
-        <time datetime="PT{hours}H{minutes}M{seconds}S">
-        {hours? hours + ":" : ""}{minutes || "0"}:{seconds}
+        <time datetime="PT{hours}H{minutes}M{seconds % 60}S">
+        {hours? hours + ":" : ""}{minutes || "0"}:{seconds % 60}
         </time>
     </output>
     <div class="timer_container">
