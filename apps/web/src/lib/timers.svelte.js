@@ -1,5 +1,9 @@
 import { SvelteSet } from "svelte/reactivity"
 import { supabase } from "./supabase_client"
+import { snackbar } from "m3-svelte"
+import { goto } from "$app/navigation"
+import { settings } from "./settings.svelte"
+import { get } from "svelte/store"
 
 let timer_store = $state({timers: []})
 let canceled_timers = new SvelteSet()
@@ -30,7 +34,7 @@ function clean_locally_canceled_timers() {
 
 async function load_timers() {
     const {data} = await (await fetch("/api/v1/timers")).json()
-    
+
     timer_store.timers = data ?? []
 
     clean_locally_canceled_timers()
@@ -44,9 +48,8 @@ export async function create_timer(duration) {
         ends_at: Date.now() + duration * 1000,
         client_timer_id: client_timer_id
     })
-
+    
     try {
-
         const response = await fetch("/api/v1/timers/create", {
             method: "POST",
             body: JSON.stringify({
@@ -55,13 +58,19 @@ export async function create_timer(duration) {
             })
         })
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+        if (response.status == 401 && !settings.dismissed_login) {
+            snackbar(
+                'Sign in to sync this timer to the cloud',
+                {
+                    ["Sign in"]: () => goto('/login'),
+                    ["Dismiss"]: () => {settings.dismissed_login = true},
+                },
+            );
         }
-
-    } catch(error) {
-        alert("THERE WAS AN ERROR CREATING A TIMER:" + error.message)
+    } catch {
+        alert("Interal server error while creating a new timer")
     }
+
 }
 
 export async function cancel_timer(client_id) {

@@ -1,6 +1,7 @@
 <script>
-    import { Button } from "m3-svelte";
+    import { Button, Snackbar } from "m3-svelte";
     import { goto } from "$app/navigation";
+    import NavigationMenu from "./components/NavigationMenu.svelte";
     import StartButton from "./components/StartButton.svelte";
     import PomodoroTypeSelector from "./components/PomodoroTypeSelector.svelte";
     import { supabase } from "$lib/supabase_client";
@@ -25,10 +26,6 @@
     let labels = $state([])
 </script>
 
-<div style="position:fixed; top:1rem; right:1rem">
-    <Button onclick={() => {supabase.auth.signOut(); goto("/login")}}>Logout</Button>
-</div>
-
 <div class="main_container">
     <PomodoroTypeSelector {timer_types} bind:timer_type></PomodoroTypeSelector>
 
@@ -40,6 +37,7 @@
         <Timer still timer={{created_at: 0, ends_at: timer_duration[timer_type]}} ></Timer>
         <StartButton {timer_duration} {timer_type} {labels}></StartButton>
     {/if}
+    <Snackbar></Snackbar>
 </div>
 
 <style>

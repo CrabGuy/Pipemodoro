@@ -20,7 +20,7 @@
     
     const now = new SvelteDate(Date.now())
 
-    const seconds = $derived(still? ends_at - created_at : Math.floor(Math.max(0, ends_at - now.getTime()) / 1000))
+    const seconds = $derived(still? ends_at - created_at : Math.ceil(Math.max(0, ends_at - now.getTime()) / 1000))
 
     const minutes = $derived(Math.floor((seconds / 60) % 60));
     const hours = $derived(Math.floor(seconds / 60 / 60));
@@ -33,20 +33,25 @@
 
         timer_percent.set(percentage_done, { duration: 0 })
         timer_percent.set(100, { duration: ends_at - Date.now(), easing: linear })
-
-        // still needs to poll because of the time left text
-        const interval = setInterval(() => {
+        
+        let raf
+        
+        const tick = () => {
             now.setTime(Date.now())
 
             if (Date.now() > ends_at) {
                 if (timer) {
                     timer.expired = true
+                    return
                 }
             }
 
-        }, 500)
-
-        return () => clearInterval(interval)
+            raf = requestAnimationFrame(tick)
+        }
+        
+        raf = requestAnimationFrame(tick)
+        
+        return () => cancelAnimationFrame(raf)
     })
 </script>
 
@@ -55,8 +60,8 @@
         <Button onclick={() => {cancel_timer(timer.client_timer_id)}}>Cancel</Button>
     {/if}
     <output>
-        <time datetime="PT{hours}H{minutes}M{seconds % 60}S">
-        {hours? hours + ":" : ""}{minutes || "0"}:{seconds % 60}
+        <time datetime="PT{hours}H{minutes}M{String(seconds % 60).padStart(2, "0")}S">
+        {hours? hours + ":" : ""}{minutes || "0"}:{String(seconds % 60).padStart(2, "0")}
         </time>
     </output>
     <div class="timer_container">

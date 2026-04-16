@@ -5,5 +5,4 @@
 </script>
 
 <div>Labels:</div>
-
-<Button></Button>
+<Button>Create label</Button>
