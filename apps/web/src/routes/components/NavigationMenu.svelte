@@ -18,7 +18,7 @@
             icon: timer
         },
         {
-            url: "/login",
+            url: "/account",
             label: "Account",
             icon: person
         },
@@ -30,7 +30,7 @@
     ]
 </script>
 
-<NavigationRail>
+<NavigationRail iconType="full">
     {#each SECTIONS as section}
         <NavigationRailItem
         label={section.label}

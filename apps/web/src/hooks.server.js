@@ -1,8 +1,11 @@
 import { createClient } from '@supabase/supabase-js';
 import { createServerClient } from '@supabase/ssr';
+import { redirect } from '@sveltejs/kit';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+const AUTH_ROUTES = ["/account/auth"]
 
 export const handle = async ({ event, resolve }) => {
   const authHeader = event.request.headers.get('authorization');
@@ -39,6 +42,12 @@ export const handle = async ({ event, resolve }) => {
     : await event.locals.supabase.auth.getUser();
 
   event.locals.user = error ? null : user ?? null;
+  
+  const is_auth_route = AUTH_ROUTES.some((route) => event.url.pathname.startsWith(route))
+
+  if (!user && !is_auth_route) {
+    redirect(301, "/account/auth/signup")
+  }
 
   return resolve(event);
 };
