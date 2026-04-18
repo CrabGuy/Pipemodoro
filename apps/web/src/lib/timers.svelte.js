@@ -8,7 +8,7 @@ import { get } from "svelte/store"
 let timer_store = $state({timers: []})
 let canceled_timers = new SvelteSet()
 
-const is_active = (timer) =>
+export const is_active = (timer) =>
     ((new Date(timer.ends_at)).getTime() >= Date.now())
     && !timer.expired
     && !timer.canceled
@@ -45,10 +45,10 @@ export async function create_timer(duration) {
 
     timer_store.timers.push({
         created_at: Date.now(),
-        ends_at: Date.now() + duration * 1000,
+        ends_at: Date.now() + duration,
         client_timer_id: client_timer_id
     })
-    
+
     try {
         const response = await fetch("/api/v1/timers/create", {
             method: "POST",

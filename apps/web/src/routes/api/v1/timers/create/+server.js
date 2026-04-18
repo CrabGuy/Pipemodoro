@@ -19,7 +19,7 @@ export const POST = async ({request, locals}) => {
 
     await locals.supabase.from("Timers").insert({
         created_at: (new Date(Date.now())).toISOString(),
-        ends_at: (new Date(Date.now() + Math.floor(duration) * 1000)).toISOString(),
+        ends_at: (new Date(Date.now() + duration)).toISOString(),
         uuid: user.id,
         canceled: false,
         client_timer_id: client_timer_id || crypto.randomUUID(),

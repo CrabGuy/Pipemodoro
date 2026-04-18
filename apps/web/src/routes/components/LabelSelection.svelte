@@ -1,19 +1,38 @@
 <script>
-    import { SelectOutlined } from "m3-svelte";
+    import { Chip, Button, Icon } from "m3-svelte";
+    import add from "@ktibow/iconset-material-symbols/add-2"
+    import { goto } from "$app/navigation";
     
-    let selected_label = $state("Work")
-    let {labels = $bindable([])} = $props()
+    let {label} = $props()
 
-    $effect(() => {
-        labels = selected_label
-            .split(",")
-            .map((label) => label.split(" ").filter((v) => v.length > 0).join("_"))
-    })
+    const AVAILABLE_LABELS = ["Work", "Homework", "Passion project"]
 </script>
 
 <!-- TODO: make this query the labels database -->
-<SelectOutlined label="Labels" bind:value={selected_label} options={[
-    {"text": "Work"},
-    {"text": "Homework"},
-    {"text": "Passion project"}
-]}></SelectOutlined>
+
+<div>
+    {#each AVAILABLE_LABELS as name}
+        <Chip
+        variant="general"
+        onclick={() => {label = name}}
+        selected={label==name}
+        >
+            {name}
+        </Chip>
+    {/each}
+    <Chip variant="general"
+    onclick={() => goto("/labels")}
+    >
+        <Icon icon={add}></Icon>
+    </Chip>
+</div>
+
+<style>
+    div {
+        align-self: center;
+        display: flex;
+        width: 30vw;
+        justify-content: space-evenly;
+        align-items:center;
+    }
+</style>

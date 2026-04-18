@@ -1,41 +1,55 @@
 <script>
-    import { Button, Snackbar } from "m3-svelte";
+    import { Button, Chip, Snackbar } from "m3-svelte";
     import { goto } from "$app/navigation";
     import NavigationMenu from "./components/NavigationMenu.svelte";
     import StartButton from "./components/StartButton.svelte";
     import PomodoroTypeSelector from "./components/PomodoroTypeSelector.svelte";
     import { supabase } from "$lib/supabase_client";
-    import { get_active_timers } from "$lib/timers.svelte";
+    import { get_active_timers, is_active } from "$lib/timers.svelte";
     import LabelSelection from "./components/LabelSelection.svelte";
     import {LoadingIndicator} from "m3-svelte";
-
     import { user } from "$lib/auth";
     import { onMount, onDestroy } from "svelte";
     import Timer from "./components/Timer.svelte";
+    import StillTimer from "./components/StillTimer.svelte";
+    import ActiveTimer from "./components/ActiveTimer.svelte";
+    import CancelButton from "./components/CancelButton.svelte";
 
     const active_timers = $derived(get_active_timers())
 
-    const MINUTE = 60
+    const MINUTE = 60 * 1000
     let timer_duration = $state({
         "Pomodoro": MINUTE * 2/6,
         "Rest": MINUTE * 5,
         "Long rest": MINUTE * 15,
     })
+
     const timer_types = Object.keys(timer_duration);
     let timer_type = $state("Pomodoro")
-    let labels = $state([])
+    let label = $state("Work")
+
+    const active_timer = $derived(active_timers[0])
+
+    const in_milliseconds = (ISO) => (new Date(ISO)).getTime()
 </script>
 
 <div class="main_container">
     <PomodoroTypeSelector {timer_types} bind:timer_type></PomodoroTypeSelector>
 
     <!-- cannot use await on timer loads because it breaks the database sync -->
-    {#if active_timers.length > 0}
-        <Timer timer={active_timers[0]}></Timer>
+    {#if active_timer}
+        <ActiveTimer
+        created_at = {in_milliseconds(active_timer.created_at)}
+        ends_at = {in_milliseconds(active_timer.ends_at)}
+        />
+        <div style="align-self: center;">
+            <Chip selected variant="general" >{label}</Chip>
+        </div>
+        <CancelButton client_timer_id = {active_timer.client_timer_id}/>
     {:else}
-        <LabelSelection bind:labels></LabelSelection>
-        <Timer still timer={{created_at: 0, ends_at: timer_duration[timer_type]}} ></Timer>
-        <StartButton {timer_duration} {timer_type} {labels}></StartButton>
+        <StillTimer ms={timer_duration[timer_type]} />
+        <LabelSelection bind:label></LabelSelection>
+        <StartButton {timer_duration} {timer_type} {label}></StartButton>
     {/if}
     <Snackbar></Snackbar>
 </div>

@@ -1,72 +1,33 @@
 <script>
-    import { supabase } from "$lib/supabase_client";
     import {CircularProgress, TextFieldMultiline, Button} from "m3-svelte"
     import { Tween } from "svelte/motion";
     import { linear } from "svelte/easing";
     import { SvelteDate } from "svelte/reactivity";
-    import { cancel_timer } from "$lib/timers.svelte";
 
-    const {timer, still} = $props()
+    const {ms_total, ms_left} = $props()
 
-    const created_at = $derived((new Date(timer.created_at)).getTime())
-    const ends_at = $derived((new Date(timer.ends_at)).getTime())
+    const seconds_total = $derived(Math.ceil(ms_total / 1000))
+    const seconds_left = $derived(Math.ceil(ms_left / 1000))
 
-    const timer_percent = new Tween(0.1, { easing: linear })
+    const minutes_left = $derived(Math.floor((seconds_left / 60) % 60))
+    const hours_left = $derived(Math.floor((minutes_left / 60) % 60))
 
-    const total_duration = $derived(ends_at - created_at)
-
-    const passed_duration = $derived(Date.now() - created_at)
-    const percentage_done = $derived(Math.max((passed_duration / total_duration) * 100, 0.1))
-    
-    const now = new SvelteDate(Date.now())
-
-    const seconds = $derived(still? ends_at - created_at : Math.ceil(Math.max(0, ends_at - now.getTime()) / 1000))
-
-    const minutes = $derived(Math.floor((seconds / 60) % 60));
-    const hours = $derived(Math.floor(seconds / 60 / 60));
-
-    $effect(() => {
-        if (still) {
-            timer_percent.set(0, {duration: 0})
-            return
-        }
-
-        timer_percent.set(percentage_done, { duration: 0 })
-        timer_percent.set(100, { duration: ends_at - Date.now(), easing: linear })
-        
-        let raf
-        
-        const tick = () => {
-            now.setTime(Date.now())
-
-            if (Date.now() > ends_at) {
-                if (timer) {
-                    timer.expired = true
-                    return
-                }
-            }
-
-            raf = requestAnimationFrame(tick)
-        }
-        
-        raf = requestAnimationFrame(tick)
-        
-        return () => cancelAnimationFrame(raf)
-    })
+    const ms_passed = $derived(ms_total - ms_left)
+    const percentage_passed = $derived(Math.ceil(ms_passed / ms_total * 100))
 </script>
 
 <div class="wrapper">
-    {#if !still}
+    <!-- {#if !still}
         <Button onclick={() => {cancel_timer(timer.client_timer_id)}}>Cancel</Button>
-    {/if}
+    {/if} -->
     <output>
-        <time datetime="PT{hours}H{minutes}M{String(seconds % 60).padStart(2, "0")}S">
-        {hours? hours + ":" : ""}{minutes || "0"}:{String(seconds % 60).padStart(2, "0")}
+        <time datetime="PT{hours_left}H{minutes_left}M{String(seconds_left % 60).padStart(2, "0")}S">
+        {hours_left? hours_left + ":" : ""}{minutes_left || "0"}:{String(seconds_left % 60).padStart(2, "0")}
         </time>
     </output>
     <div class="timer_container">
         <CircularProgress
-        percent = {timer_percent.current}
+        percent = {percentage_passed}
         thickness = 3
         ></CircularProgress>
     </div>
@@ -84,7 +45,7 @@
     output {
         display: block;
         font-family: 'Inter', sans-serif;
-        font-size: 3rem;
+        font-size: 6rem;
         place-self: center;
         z-index: 1;
     }

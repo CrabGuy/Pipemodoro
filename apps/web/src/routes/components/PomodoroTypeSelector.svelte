@@ -6,7 +6,7 @@
 <div style="align-self: center;">
     <ConnectedButtons>
         {#each timer_types as type}
-            <Button variant="filled" square label size="l">
+            <Button variant="filled" square label size="m">
                 <input
                 type="radio"
                 checked = {timer_type == type}
