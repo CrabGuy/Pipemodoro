@@ -84,4 +84,5 @@ body {
     height: 100vh;
     margin: 0;
     background-color: var(--m3c-surface);
+    font-family: "Inter Variable", sans-serif;
 }

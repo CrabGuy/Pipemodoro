@@ -1,7 +1,5 @@
 <script>
-    import { Button, Chip, Snackbar } from "m3-svelte";
-    import { goto } from "$app/navigation";
-    import NavigationMenu from "./components/NavigationMenu.svelte";
+    import { Chip, Snackbar } from "m3-svelte";
     import StartButton from "./components/StartButton.svelte";
     import PomodoroTypeSelector from "./components/PomodoroTypeSelector.svelte";
     import { supabase } from "$lib/supabase_client";
@@ -36,7 +34,6 @@
 <div class="main_container">
     <PomodoroTypeSelector {timer_types} bind:timer_type></PomodoroTypeSelector>
 
-    <!-- cannot use await on timer loads because it breaks the database sync -->
     {#if active_timer}
         <ActiveTimer
         created_at = {in_milliseconds(active_timer.created_at)}
@@ -51,6 +48,7 @@
         <LabelSelection bind:label></LabelSelection>
         <StartButton {timer_duration} {timer_type} {label}></StartButton>
     {/if}
+
     <Snackbar></Snackbar>
 </div>
 
