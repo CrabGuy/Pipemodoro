@@ -2,7 +2,7 @@ import { supabase } from "$lib/supabase_client";
 import { json } from "@sveltejs/kit";
 
 export const POST = async ({request, locals}) => {    
-    const {duration, client_timer_id, label} = await request.json()
+    const { name, webhook } = await request.json()
     
     const auth_header = request.headers.get('authorization')
     const token = auth_header?.startsWith('Bearer ')
@@ -17,14 +17,11 @@ export const POST = async ({request, locals}) => {
         return json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    await locals.supabase.from("Timers").insert({
-        created_at: (new Date(Date.now())).toISOString(),
-        ends_at: (new Date(Date.now() + duration)).toISOString(),
-        uuid: user.id,
-        canceled: false,
-        client_timer_id: client_timer_id || crypto.randomUUID(),
-        label: label
+    await locals.supabase.from("Labels").insert({
+        name: name,
+        webhook: webhook,
+        id: user.id
     })
 
-    return json({duration})
+    return json({name, webhook})
 }

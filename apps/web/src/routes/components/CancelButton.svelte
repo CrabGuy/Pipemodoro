@@ -3,8 +3,6 @@
     import timer_off from "@ktibow/iconset-material-symbols/timer-off"
     import { cancel_timer } from "$lib/timers.svelte";
     const {client_timer_id} = $props()
-    
-    $inspect(client_timer_id)
 
 </script>
 

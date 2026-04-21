@@ -13,13 +13,10 @@
     const hours_left = $derived(Math.floor((minutes_left / 60) % 60))
 
     const ms_passed = $derived(ms_total - ms_left)
-    const percentage_passed = $derived(Math.ceil(ms_passed / ms_total * 100))
+    const percentage_passed = $derived(ms_passed / ms_total * 100)
 </script>
 
 <div class="wrapper">
-    <!-- {#if !still}
-        <Button onclick={() => {cancel_timer(timer.client_timer_id)}}>Cancel</Button>
-    {/if} -->
     <output>
         <time datetime="PT{hours_left}H{minutes_left}M{String(seconds_left % 60).padStart(2, "0")}S">
         {hours_left? hours_left + ":" : ""}{minutes_left || "0"}:{String(seconds_left % 60).padStart(2, "0")}

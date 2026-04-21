@@ -46,7 +46,7 @@ export const handle = async ({ event, resolve }) => {
   const is_auth_route = AUTH_ROUTES.some((route) => event.url.pathname.startsWith(route))
 
   if (!user && !is_auth_route) {
-    redirect(301, "/account/auth/signup")
+    redirect(301, "/account/auth/login")
   }
 
   return resolve(event);

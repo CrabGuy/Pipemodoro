@@ -1,12 +1,10 @@
 <script>
     import { Button, Divider, Card, Icon, Dialog, TextFieldOutlined } from "m3-svelte";    
     import "iconify-icon";
-
-    const LABELS = [
-        {name: "Work", icon: "ic:home"},
-        {name: "Study", icon: "ic:home"},
-        {name: "Personal project", icon: "ic:home"},
-    ]
+    import LabelInfoCard from "../components/LabelInfoCard.svelte";
+    import { labels_store } from "$lib/labels.svelte";
+    
+    const labels = $derived(labels_store.labels)
 
     let selected_label = $state("")
     let creation_open = $state(false)
@@ -43,10 +41,10 @@
         <Button style="width: 10rem"
         onclick={() => {creation_open = true}}
         >Create new label</Button>
-        {#each LABELS as label}
-            <Card 
-            variant={selected_label == label.name? "filled" : "outlined"}
-            onclick={() => selected_label = label.name}
+        {#each labels as label}
+            <Card
+            variant={selected_label.name == label.name? "filled" : "outlined"}
+            onclick={() => selected_label = label}
             >
             <div style="display: flex; justify-items: center;">
                 <iconify-icon style="width: 1rem" icon={label.icon}></iconify-icon>
@@ -57,17 +55,7 @@
     </div>
     <div class="info_container">
         {#if selected_label}
-            <Card variant="elevated">
-                <div style="height: 80vh;">
-                    <h1>{selected_label}</h1>
-                    <Divider/>
-                    <h1>Total time spent: {"X"}</h1>
-                    <h2>Timers finished: {"X"}</h2>
-                    <h3>Creation date: {"X"}</h3>
-                    <h3>Webhook connected: {"X"}</h3>
-                </div>
-                <Button variant="tonal" style="width: 6rem" onclick={() => {deletion_open = true}}>Delete</Button>
-            </Card>
+            <LabelInfoCard {selected_label} on_delete={() => {deletion_open = true}} />
         {:else}
             <div class="idle_container">Select a label...</div>
         {/if}

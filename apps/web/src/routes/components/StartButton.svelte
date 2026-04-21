@@ -6,7 +6,7 @@
     let {timer_duration, timer_type, label} = $props()
     
     function onclick() {
-        create_timer(timer_duration[timer_type])
+        create_timer(timer_duration[timer_type], label)
     }
 
 </script>

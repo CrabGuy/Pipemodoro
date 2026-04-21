@@ -24,9 +24,10 @@
 
     const timer_types = Object.keys(timer_duration);
     let timer_type = $state("Pomodoro")
-    let label = $state("Work")
+    let selected_label = $state({label: null})
 
     const active_timer = $derived(active_timers[0])
+    let expired = $state(false)
 
     const in_milliseconds = (ISO) => (new Date(ISO)).getTime()
 </script>
@@ -34,19 +35,22 @@
 <div class="main_container">
     <PomodoroTypeSelector {timer_types} bind:timer_type></PomodoroTypeSelector>
 
-    {#if active_timer}
+    {#if active_timer && !expired}
         <ActiveTimer
+        on_expire={() => {expired = true}}
         created_at = {in_milliseconds(active_timer.created_at)}
         ends_at = {in_milliseconds(active_timer.ends_at)}
         />
         <div style="align-self: center;">
-            <Chip selected variant="general" >{label}</Chip>
+            {#if selected_label.label}
+                <Chip selected variant="general" >{selected_label.label?.name}</Chip>
+            {/if}
         </div>
-        <CancelButton client_timer_id = {active_timer.client_timer_id}/>
+        <CancelButton client_timer_id={active_timer.client_timer_id}/>
     {:else}
         <StillTimer ms={timer_duration[timer_type]} />
-        <LabelSelection bind:label></LabelSelection>
-        <StartButton {timer_duration} {timer_type} {label}></StartButton>
+        <LabelSelection bind:selected_label></LabelSelection>
+        <StartButton {timer_duration} {timer_type} label={selected_label.label?.name}></StartButton>
     {/if}
 
     <Snackbar></Snackbar>

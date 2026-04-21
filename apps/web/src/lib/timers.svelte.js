@@ -3,7 +3,6 @@ import { supabase } from "./supabase_client"
 import { snackbar } from "m3-svelte"
 import { goto } from "$app/navigation"
 import { settings } from "./settings.svelte"
-import { get } from "svelte/store"
 
 let timer_store = $state({timers: []})
 let canceled_timers = new SvelteSet()
@@ -40,13 +39,14 @@ async function load_timers() {
     clean_locally_canceled_timers()
 }
 
-export async function create_timer(duration) {    
+export async function create_timer(duration, label) {    
     const client_timer_id = crypto.randomUUID()
 
     timer_store.timers.push({
         created_at: Date.now(),
         ends_at: Date.now() + duration,
-        client_timer_id: client_timer_id
+        client_timer_id: client_timer_id,
+        label: label,
     })
 
     try {
@@ -54,7 +54,8 @@ export async function create_timer(duration) {
             method: "POST",
             body: JSON.stringify({
                 duration: duration,
-                client_timer_id: client_timer_id
+                client_timer_id: client_timer_id,
+                label: label,
             })
         })
 
