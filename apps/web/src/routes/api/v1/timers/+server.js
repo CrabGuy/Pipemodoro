@@ -8,6 +8,6 @@ export const GET = async ({ locals, request }) => {
     const { data, error } = await locals.supabase
         .from('Timers')
         .select('*')
-    
+
     return json({ user_id: locals.user.id, data, error })
 }
