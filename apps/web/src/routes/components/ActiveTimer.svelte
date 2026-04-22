@@ -5,14 +5,16 @@
     let { created_at, ends_at, on_expire } = $props()
 
     const ms_total = $derived(ends_at - created_at)
-    let ms_left = $state(0)
+
+    // svelte-ignore state_referenced_locally
+    let ms_left = $state(ends_at - Date.now())
 
     $effect(() => {
         let raf
 
         const tick = () => {
             ms_left = ends_at - Date.now()
-            
+
             if (ms_left <= 0) {
                 on_expire()
             }
