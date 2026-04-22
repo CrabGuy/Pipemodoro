@@ -3,7 +3,7 @@
     import StartButton from "./components/StartButton.svelte";
     import PomodoroTypeSelector from "./components/PomodoroTypeSelector.svelte";
     import { supabase } from "$lib/supabase_client";
-    import { get_active_timers, is_active } from "$lib/timers.svelte";
+    import { get_active_timers, refresh_timers } from "$lib/timers.svelte";
     import LabelSelection from "./components/LabelSelection.svelte";
     import {LoadingIndicator} from "m3-svelte";
     import { user } from "$lib/auth";
@@ -13,7 +13,7 @@
     import ActiveTimer from "./components/ActiveTimer.svelte";
     import CancelButton from "./components/CancelButton.svelte";
 
-    const active_timers = $derived(get_active_timers())
+    let active_timers = $derived(get_active_timers())
 
     const MINUTE = 60 * 1000
     let timer_duration = $state({
@@ -27,7 +27,6 @@
     let selected_label = $state({label: null})
 
     const active_timer = $derived(active_timers[0])
-    let expired = $state(false)
 
     const in_milliseconds = (ISO) => (new Date(ISO)).getTime()
 </script>
@@ -35,9 +34,9 @@
 <div class="main_container">
     <PomodoroTypeSelector {timer_types} bind:timer_type></PomodoroTypeSelector>
 
-    {#if active_timer && !expired}
+    {#if active_timer}
         <ActiveTimer
-        on_expire={() => {expired = true}}
+        on_expire={() => {active_timers = refresh_timers()}}
         created_at = {in_milliseconds(active_timer.created_at)}
         ends_at = {in_milliseconds(active_timer.ends_at)}
         />

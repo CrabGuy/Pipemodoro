@@ -39,6 +39,10 @@ async function load_timers() {
     clean_locally_canceled_timers()
 }
 
+export async function refresh_timers() {
+    await load_timers()
+}
+
 export async function create_timer(duration, label) {    
     const client_timer_id = crypto.randomUUID()
 
