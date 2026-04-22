@@ -1,7 +1,7 @@
 <script>
     import { Button, Divider, Card, Icon, Dialog, TextFieldOutlined } from "m3-svelte";    
     import "iconify-icon";
-    import LabelInfoCard from "../components/LabelInfoCard.svelte";
+    import LabelInfoCard from "$lib/components/LabelInfoCard.svelte";
     import { labels_store } from "$lib/labels.svelte";
     
     const labels = $derived(labels_store.labels)

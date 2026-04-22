@@ -1,6 +1,6 @@
 <script>
     import "../app.css"
-    import NavigationMenu from "./components/NavigationMenu.svelte";
+    import NavigationMenu from "$lib/components/NavigationMenu.svelte";
     let { children } = $props();
 </script>
 

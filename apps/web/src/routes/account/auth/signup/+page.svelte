@@ -1,6 +1,6 @@
 <script>
     import { goto } from "$app/navigation";
-    import AccountForm from "../../../components/AccountForm.svelte";
+    import AccountForm from "$lib/components/AccountForm.svelte";
     import { Button } from "m3-svelte";
     import { supabase } from "$lib/supabase_client";
 

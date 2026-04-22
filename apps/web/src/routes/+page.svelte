@@ -1,17 +1,17 @@
 <script>
     import { Chip, Snackbar } from "m3-svelte";
-    import StartButton from "./components/StartButton.svelte";
-    import PomodoroTypeSelector from "./components/PomodoroTypeSelector.svelte";
+    import StartButton from "$lib/components/StartButton.svelte";
+    import PomodoroTypeSelector from "$lib/components/PomodoroTypeSelector.svelte";
     import { supabase } from "$lib/supabase_client";
     import { get_active_timers, refresh_timers } from "$lib/timers.svelte";
-    import LabelSelection from "./components/LabelSelection.svelte";
+    import LabelSelection from "$lib/components/LabelSelection.svelte";
     import {LoadingIndicator} from "m3-svelte";
     import { user } from "$lib/auth";
     import { onMount, onDestroy } from "svelte";
-    import Timer from "./components/Timer.svelte";
-    import StillTimer from "./components/StillTimer.svelte";
-    import ActiveTimer from "./components/ActiveTimer.svelte";
-    import CancelButton from "./components/CancelButton.svelte";
+    import Timer from "$lib/components/Timer.svelte";
+    import StillTimer from "$lib/components/StillTimer.svelte";
+    import ActiveTimer from "$lib/components/ActiveTimer.svelte";
+    import CancelButton from "$lib/components/CancelButton.svelte";
 
     let active_timers = $derived(get_active_timers())
 
