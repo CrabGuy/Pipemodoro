@@ -6,7 +6,7 @@
     import { get_active_timers, refresh_timers } from "$lib/timers.svelte";
     import LabelSelection from "$lib/components/LabelSelection.svelte";
     import {LoadingIndicator} from "m3-svelte";
-    import { user } from "$lib/auth";
+    import { user } from "$lib/auth.svelte";
     import { onMount, onDestroy } from "svelte";
     import Timer from "$lib/components/Timer.svelte";
     import StillTimer from "$lib/components/StillTimer.svelte";

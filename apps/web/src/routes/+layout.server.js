@@ -1,5 +1,3 @@
-export async function load({ locals }) {
-    return {
-        user: locals.user
-    }
+export const load = async ({cookies}) => {
+    return {cookies: cookies.getAll()}
 }
