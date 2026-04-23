@@ -14,7 +14,6 @@
     import CancelButton from "$lib/components/CancelButton.svelte";
 
     let active_timers = $derived(get_active_timers())
-    $inspect(active_timers)
 
     const MINUTE = 60 * 1000
     let timer_duration = $state({
