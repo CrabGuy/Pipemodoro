@@ -3,40 +3,21 @@ import { supabase } from "./supabase_client"
 import { snackbar } from "m3-svelte"
 import { goto } from "$app/navigation"
 import { settings } from "./settings.svelte"
+import { create_local_database, insert, remove, update, set, load_values } from "$lib/LocalDatabase.svelte"
 
-let timer_store = $state({timers: []})
-let canceled_timers = new SvelteSet()
+let timer_store = $state(create_local_database("Timers"))
 
 export const is_active = (timer) =>
     ((new Date(timer.ends_at)).getTime() >= Date.now())
     && !timer.expired
     && !timer.canceled
-    && !canceled_timers.has(timer.client_timer_id)
 
-const active_timers = $derived(timer_store.timers.filter(is_active))
+const active_timers = $derived(timer_store.values.filter(is_active))
 
 export const get_active_timers = () => active_timers
 
-function clean_locally_canceled_timers() {
-
-    timer_store.timers.forEach((timer) => {
-        const is_canceled_locally = canceled_timers.has(timer.client_timer_id) && timer.id && !timer.canceled
-        if (is_canceled_locally) {
-            try {
-                fetch(`/api/v1/timers/cancel/${timer.id}`, {method: "POST"})
-            } catch(e) {
-                alert("INTERNAL ERROR:" + e.message)
-            }
-        }
-    })
-}
-
 async function load_timers() {
-    const {data} = await (await fetch("/api/v1/timers")).json()
-
-    timer_store.timers = data ?? []
-
-    clean_locally_canceled_timers()
+    timer_store.apply(set(load_values("Timers")))
 }
 
 export async function refresh_timers() {
@@ -46,49 +27,17 @@ export async function refresh_timers() {
 export async function create_timer(duration, label) {    
     const client_timer_id = crypto.randomUUID()
 
-    timer_store.timers.push({
+    timer_store.apply(insert({
         created_at: Date.now(),
         ends_at: Date.now() + duration,
         client_timer_id: client_timer_id,
         label: label,
-    })
-
-    try {
-        const response = await fetch("/api/v1/timers/create", {
-            method: "POST",
-            body: JSON.stringify({
-                duration: duration,
-                client_timer_id: client_timer_id,
-                label: label,
-            })
-        })
-
-        if (response.status == 401 && !settings.dismissed_login) {
-            snackbar(
-                'Sign in to sync this timer to the cloud',
-                {
-                    ["Sign in"]: () => goto('/login'),
-                    ["Dismiss"]: () => {settings.dismissed_login = true},
-                },
-            );
-        }
-    } catch {
-        alert("Interal server error while creating a new timer")
-    }
-
+    }))
 }
 
 export async function cancel_timer(client_id) {
-    canceled_timers.add(client_id)
-    load_timers()
+    const is_correct_timer = (record) => record.client_timer_id == client_id
+    const set_canceled = (record) => ({...record, canceled: true})
+    
+    timer_store.apply(update(is_correct_timer, set_canceled))
 }
-
-async function sync_to_database() {
-    supabase.channel("Timers-changes")
-    .on("postgres_changes", { event: '*', schema: 'public', table: 'Timers' }, load_timers).subscribe()
-}
-
-$effect.root(() => {
-    load_timers()
-    sync_to_database()
-})
