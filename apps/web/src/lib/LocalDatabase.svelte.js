@@ -23,17 +23,18 @@ function set_local_storage_values(name, values) {
     }
 }
 
+export const apply = async (database, operation) => {
+    database.values = await operation(database)
+    set_local_storage_values(database.name, database.values)
+    return database
+}
+
 export function create_database(name) {
-    let values = $state(load_values(name))
-    let database = {
+
+    let database = $state({
         get name() {return name},
-        get values() {return values},
-        async apply(operation) {
-            values = await operation(database)
-            set_local_storage_values(name, values)
-            return database
-        }
-    }
+        values: load_values(name),
+    })
 
     return database
 }

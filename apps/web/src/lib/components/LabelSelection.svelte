@@ -2,17 +2,18 @@
     import { Chip, Button, Icon, LoadingIndicator } from "m3-svelte";
     import add from "@ktibow/iconset-material-symbols/add-2"
     import { goto } from "$app/navigation";
-    import { labels_store, labels_loaded } from "$lib/labels.svelte";
-    
+    import { get_values, is_updating } from "$lib/labels.svelte";
+
     let {selected_label} = $props()
 
-    const labels = $derived(labels_store.labels)
+    const labels = $derived(get_values())
+    const updating = $derived(is_updating())
+    
+    $inspect(updating)
 </script>
 
 <div>
-    {#if !labels_loaded.state}
-        <LoadingIndicator></LoadingIndicator>
-    {:else}
+    {#if !updating}
         {#each labels as label}
             <Chip
             variant="general"
@@ -27,6 +28,10 @@
         >
             <Icon icon={add}></Icon>
         </Chip>
+    {:else}
+        <Chip variant="general">...</Chip>
+        <Chip variant="general">...</Chip>
+        <Chip variant="general">...</Chip>
     {/if}
 </div>
 

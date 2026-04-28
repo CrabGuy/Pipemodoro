@@ -21,12 +21,15 @@
         "Rest": MINUTE * 5,
         "Long rest": MINUTE * 15,
     })
-
+    
     const timer_types = Object.keys(timer_duration);
     let timer_type = $state("Pomodoro")
     let selected_label = $state({label: null})
-
+    
     const active_timer = $derived(active_timers[0])
+
+    $inspect(active_timers)
+    $inspect(active_timer)
 
     const in_milliseconds = (ISO) => (new Date(ISO)).getTime()
 </script>

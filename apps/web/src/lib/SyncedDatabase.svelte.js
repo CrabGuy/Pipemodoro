@@ -26,12 +26,17 @@ export const update = ({column, value}, updater) =>
     }
 
 export const select = local_database.select
+export const apply = local_database.apply
 
 export async function load_values(name) {
     const local_values = local_database.load_values(name)
     const online_values = (await (await supabase.from(name).select("*")).data)
 
-    return online_values
+    if (!online_values) {
+        console.warn("Online values not present")
+    }
+
+    return online_values || local_values
 }
 
 function sync_to_database(name, load_function) {
@@ -39,18 +44,22 @@ function sync_to_database(name, load_function) {
         .on("postgres_changes", { event: '*', schema: 'public', table: name }, load_function).subscribe()
 }
 
-export const refresh_values = (name) => async (database) => await database.apply(local_database.set(await load_values(name)))
+export const refresh_values = (name) => async (database) =>
+    {
+        database.updating = true
+        await local_database.apply(database, local_database.set(await load_values(name)))
+        database.updating = false
+    }
 
 export async function create_database(name) {
-    let database = local_database.create_database(name)
-
-    sync_to_database(database.name, () => refresh_values(database.name)(database))
-
-    $effect.root(() => {
-        $inspect(database)
+    let database = $state({
+        ...local_database.create_database(name),
+        updating: true
     })
 
-    await refresh_values(database.name)(database)
+    sync_to_database(database.name, async () => await refresh_values(database.name)(database))
+
+    refresh_values(database.name)(database).then(nothing)
 
     return database
 }

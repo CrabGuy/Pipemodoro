@@ -1,23 +1,24 @@
-import { supabase } from "./supabase_client"
+import { create_database, insert, remove, apply } from "$lib/SyncedDatabase.svelte";
+import { user } from "$lib/auth.svelte";
 
-export let labels_store = $state({labels: []})
-export let labels_loaded = $state({state: false})
+let labels_store = (await create_database("Labels"))
 
-async function load_labels() {
-    labels_loaded.state = false
-    const {data} = await (await fetch("/api/v1/labels")).json()
-    labels_loaded.state = true
-
-    labels_store.labels = data ?? []
+export async function create_label(name, webhook) {
+    const user_id = user.value.id
+    
+    apply(labels_store, insert({
+        id: user_id,
+        webhook: webhook,
+        name: name
+    }))
 }
 
-async function sync_to_database() {
-    supabase.channel("Labels-changes")
-    .on("postgres_changes", { event: '*', schema: 'public', table: 'Labels' }, load_labels).subscribe()
+export async function remove_label(name) {
+    apply(labels_store, remove({
+        column: "name",
+        value: name
+    }))
 }
 
-$effect.root(() => {
-    load_labels()
-    sync_to_database()
-})
-
+export const get_values = () => labels_store.values
+export const is_updating = () => labels_store.updating
