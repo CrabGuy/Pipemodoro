@@ -65,7 +65,7 @@
                 </Card>
             {/each}
         {:else}
-            {#each Array(3) as 
+            {#each Array(3) as _}
                 <Card
                 variant="outlined"
                 >
