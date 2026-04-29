@@ -5,10 +5,11 @@
     import Icon from "@iconify/svelte";
     import account_circle from "@ktibow/iconset-material-symbols/account-circle-full"
     
-    import { nothing, average, most_frequent } from "$lib/utils.svelte";
+    import { nothing, average, most_frequent, duration, format_time } from "$lib/utils";
 
     import { user } from "$lib/auth.svelte";
     import { get_timers } from "$lib/timers.svelte";
+    import { supabase } from "$lib/supabase_client";
     
     if (!user.value) {
         redirect(302, "/account/auth/login")
@@ -20,7 +21,7 @@
 
     const FACES = ["face", "face-2", "face-3", "face-4", "face-5", "face-6"]
     const get_face = () => FACES[hash(email) % FACES.length]
-    
+
     const TIME_PERIODS = [
         {
             name: "Week",
@@ -38,7 +39,6 @@
 
     let time_period = $state(TIME_PERIODS[2].duration)
 
-    const duration = (timer) => Math.round((new Date(timer.ends_at).getTime() - new Date(timer.created_at).getTime()) / 60) / 1000
     const label = (timer) => timer.label
 
     const timers = $derived(get_timers())
@@ -51,16 +51,24 @@
     const most_frequent_label = $derived(most_frequent(in_range_timers.map(label).filter(l => l != null)))
 </script>
 
-{#snippet card(text)}
+{#snippet card(text, icon)}
     <Card variant="outlined" onclick={() => {}}>
-        <div style="width: 20vw;">{text}</div>
+        <div style="display: flex; gap: 1rem">
+            <Icon icon="material-symbols:{icon}"></Icon>
+            <div style="width: 20vw;">{text}</div>
+        </div>
     </Card>
 {/snippet}
 
 <div class="main_container">
-    <form style="align-self:flex-end; height: 1rem; padding: 1rem" action="/api/v1/signout" method="POST">
-        <Button type="submit">Sign out</Button>
-    </form>
+    <div style="align-self:flex-end; height: 1rem; padding: 1rem">
+        <Button
+        onclick={() => {
+            supabase.auth.signOut()
+            goto("/account/auth/login")
+        }}
+        >Sign out</Button>
+    </div>
     <h1>Account details</h1>
     <div style="display: flex; width: 100%; gap: 1rem; justify-content: space-around;">
         <Card variant="elevated">
@@ -90,10 +98,10 @@
             </div>
         
             <div class="stats_div">
-                {@render card(`Total pomodori completed: ${completed_timers}`)}
-                {@render card(`Completion rate: ${completion_rate}`)}
-                {@render card(`Average pomodoro: ${average_duration} minutes`)}
-                {@render card(`Most used label: ${most_frequent_label == null ? "none" : most_frequent_label}`)}
+                {@render card(`Total timers completed: ${completed_timers}`, "calculate")}
+                {@render card(`Completion rate: ${completion_rate}`, "avg-pace")}
+                {@render card(`Average pomodoro: ${format_time(average_duration)}`, "avg-time")}
+                {@render card(`Most used label: ${most_frequent_label == null ? "none" : most_frequent_label}`, "bookmark-heart")}
             </div>
         </div>
         

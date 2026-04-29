@@ -18,14 +18,14 @@
             icon: timer
         },
         {
-            url: "/account",
-            label: "Account",
-            icon: person
-        },
-        {
             url: "/labels",
             label: "Labels",
             icon: book
+        },
+        {
+            url: "/account",
+            label: "Account",
+            icon: person
         },
     ]
 </script>

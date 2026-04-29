@@ -8,8 +8,7 @@
 
     const labels = $derived(get_values())
     const updating = $derived(is_updating())
-    
-    $inspect(updating)
+
 </script>
 
 <div>

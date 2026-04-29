@@ -1,8 +1,8 @@
 <script>
     import { Button, Divider, Card, Icon, Dialog, TextFieldOutlined } from "m3-svelte";    
-    import "iconify-icon";
     import LabelInfoCard from "$lib/components/LabelInfoCard.svelte";
     import { get_values, create_label, remove_label, is_updating } from "$lib/labels.svelte";
+    import new_label from "@ktibow/iconset-material-symbols/new-label"
     
     const labels = $derived(get_values())
     const updating = $derived(is_updating())
@@ -51,7 +51,9 @@
     <div class="labels_container">
         <Button style="width: 10rem"
         onclick={() => {creation_open = true}}
-        >Create new label</Button>
+        >
+        <Icon icon={new_label}></Icon>
+        New Label</Button>
         {#if !updating}
             {#each labels as label}
                 <Card
@@ -59,8 +61,7 @@
                 onclick={() => selected_label = label}
                 >
                 <div style="display: flex; justify-items: center;">
-                    <iconify-icon style="width: 1rem" icon={label.icon}></iconify-icon>
-                    <p>{label.name}</p>
+                    <h2>{label.name}</h2>
                 </div>
                 </Card>
             {/each}
@@ -71,7 +72,7 @@
                 >
                 <div style="display: flex; justify-items: center;">
                     <iconify-icon style="width: 1rem"></iconify-icon>
-                    <p>Loading...</p>
+                    <h2>Loading...</h2>
                 </div>
                 </Card>
             {/each}
