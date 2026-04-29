@@ -1,7 +1,8 @@
-import { createBrowserClient } from "@supabase/ssr";
+import { browser } from "$app/environment";
 import { createClient } from "@supabase/supabase-js";
 
-export const supabase = createBrowserClient(
+
+export const supabase = createClient(
     import.meta.env.VITE_SUPABASE_URL,
     import.meta.env.VITE_SUPABASE_ANON_KEY
 )

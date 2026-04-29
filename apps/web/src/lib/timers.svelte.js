@@ -18,6 +18,8 @@ export const is_active = (timer) =>
 
 export const get_active_timers = () => timer_store.values.filter(is_active)
 
+export const get_timers = () => timer_store.values
+
 export async function refresh_timers() {
     await refresh_values(timer_store.name)(timer_store)
 }

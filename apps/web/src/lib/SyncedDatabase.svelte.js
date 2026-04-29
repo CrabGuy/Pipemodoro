@@ -1,7 +1,6 @@
 import * as local_database from "$lib/LocalDatabase.svelte"
 import { supabase } from "$lib/supabase_client"
-
-const nothing = async () => {}
+import { nothing } from "$lib/utils.svelte"
 
 export const insert = (record) =>
     async (database) => {
