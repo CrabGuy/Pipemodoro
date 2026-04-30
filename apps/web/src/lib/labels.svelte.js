@@ -4,7 +4,7 @@ import { user } from "$lib/auth.svelte";
 let labels_store = (await create_database("Labels"))
 
 export async function create_label(name, webhook) {
-    const user_id = user.value.id
+    const user_id = user?.value?.id
     
     apply(labels_store, insert({
         id: user_id,

@@ -10,14 +10,15 @@
     import { user } from "$lib/auth.svelte";
     import { get_timers } from "$lib/timers.svelte";
     import { supabase } from "$lib/supabase_client";
-    
+    import { onMount } from "svelte";
+
     if (!user.value) {
-        redirect(302, "/account/auth/login")
+        goto("/account/auth/login")
     }
-    
+
     const hash = (str) => Math.abs(str.split('').reduce((hash, char) => char.charCodeAt(0) + (hash << 6) + (hash << 16) - hash,0))
 
-    const email = $derived(user.value.email)
+    const email = $derived(user?.value?.email || "ciao@example.com")
 
     const FACES = ["face", "face-2", "face-3", "face-4", "face-5", "face-6"]
     const get_face = () => FACES[hash(email) % FACES.length]
