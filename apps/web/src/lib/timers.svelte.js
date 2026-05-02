@@ -21,7 +21,7 @@ export const get_active_timers = () => timer_store.values.filter(is_active)
 export const get_timers = () => timer_store.values
 
 export async function refresh_timers() {
-    await refresh_values(timer_store.name)(timer_store)
+    return await refresh_values(timer_store.name)(timer_store)
 }
 
 export async function create_timer(duration, label) {    

@@ -47,7 +47,7 @@
     const in_range_timers = $derived(succesful_timers.filter(timer => new Date(timer.created_at).getTime() > Date.now() - time_period))
 
     const completed_timers = $derived(timers.length)
-    const completion_rate = $derived(Math.round(in_range_timers.length / timers.length * 100) / 100)
+    const completion_rate = $derived(Math.round(in_range_timers.length / timers.length * 100) / 100 || 0)
     const average_duration = $derived(average(in_range_timers.map(duration)))
     const most_frequent_label = $derived(most_frequent(in_range_timers.map(label).filter(l => l != null)))
 </script>
@@ -62,7 +62,7 @@
 {/snippet}
 
 <div class="main_container">
-    <div style="align-self:flex-end; height: 1rem; padding: 1rem">
+    <div style="align-self:flex-end; height: 1rem; margin: 1rem">
         <Button
         onclick={() => {
             supabase.auth.signOut()
@@ -97,15 +97,15 @@
                     {/each}
                 </ConnectedButtons>
             </div>
-        
+
             <div class="stats_div">
-                {@render card(`Total timers completed: ${completed_timers}`, "calculate")}
+                {@render card(`Total timers started: ${completed_timers}`, "calculate")}
                 {@render card(`Completion rate: ${completion_rate}`, "avg-pace")}
-                {@render card(`Average pomodoro: ${format_time(average_duration)}`, "avg-time")}
+                {@render card(`Average timer: ${format_time(average_duration)}`, "avg-time")}
                 {@render card(`Most used label: ${most_frequent_label == null ? "none" : most_frequent_label}`, "bookmark-heart")}
             </div>
         </div>
-        
+
     </div>
 </div>
 
@@ -117,7 +117,8 @@
         gap: 3rem;
         width: 100vw;
         height: 100vh;
-        padding: 0rem 5rem;
+        margin: 0rem 5rem;
+        overflow: auto;
     }
     
     .stats_div {

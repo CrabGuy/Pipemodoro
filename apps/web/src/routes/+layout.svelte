@@ -12,6 +12,5 @@
 	<link rel="manifest" href="/manifest.webmanifest" />
 </svelte:head>
 
-<!-- TODO: it doesnt look properly when on another section -->
 <NavigationMenu></NavigationMenu>
 {@render children()}

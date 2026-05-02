@@ -35,6 +35,7 @@ onsubmit={(e) => {e.preventDefault(); on_submit(email, password)}}
         width: 100vw;
         height: 100vh;
         margin: 40vh 20vw;
+        overflow: auto;
     }
     .buttons_container {
         display: flex;

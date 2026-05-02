@@ -11,7 +11,7 @@
 
 </script>
 
-<div>
+<div class="container">
     {#if !updating}
         {#each labels as label}
             <Chip
@@ -19,7 +19,9 @@
             onclick={() => {selected_label.label?.name == label.name ? (selected_label.label = null) : (selected_label.label = label)}}
             selected={selected_label.label?.name == label.name}
             >
-                {label.name}
+                <span style="max-width: 5rem; white-space: nowrap; overflow: hidden; display: block; text-overflow: ellipsis;">
+                    {(label.name)}
+                </span>
             </Chip>
         {/each}
         <Chip variant="general"
@@ -35,12 +37,13 @@
 </div>
 
 <style>
-    div {
+    .container {
         align-self: center;
         display: flex;
-        width: 30vw;
+        width: 40rem;
         gap: 1rem;
-        justify-content: center;
+        justify-content: safe center;
         align-items:center;
+        overflow: scroll scroll;
     }
 </style>

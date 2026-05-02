@@ -12,6 +12,7 @@
     import StillTimer from "$lib/components/StillTimer.svelte";
     import ActiveTimer from "$lib/components/ActiveTimer.svelte";
     import CancelButton from "$lib/components/CancelButton.svelte";
+    import { send_notification } from "$lib/notification";
 
     let active_timers = $derived(get_active_timers())
 
@@ -39,13 +40,22 @@
 
     {#if active_timer}
         <ActiveTimer
-        on_expire={() => {active_timers = refresh_timers()}}
+        on_expire={() => {
+            active_timers = refresh_timers()
+            send_notification("Timer finished!", {
+                body: "Your timer has finished"
+            })
+        }}
         created_at = {in_milliseconds(active_timer.created_at)}
         ends_at = {in_milliseconds(active_timer.ends_at)}
         />
         <div style="align-self: center;">
             {#if selected_label.label}
-                <Chip selected variant="general" >{selected_label.label?.name}</Chip>
+                <Chip selected variant="general" >
+                    <span style="max-width: 20rem; white-space: nowrap; overflow: hidden; display: block; text-overflow: ellipsis;">
+                        {selected_label.label?.name}
+                    </span>
+                </Chip>
             {/if}
         </div>
         <CancelButton client_timer_id={active_timer.client_timer_id}/>
@@ -63,7 +73,8 @@
         display: flex;
         flex-direction: column;
         justify-content: space-around;
-        width: 100vw;
-        height: 100vh;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
     }
 </style>

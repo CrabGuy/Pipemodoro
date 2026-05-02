@@ -27,6 +27,20 @@ export const update = ({column, value}, updater) =>
 export const select = local_database.select
 export const apply = local_database.apply
 
+function merge_values(local_values, online_values = []) {
+    const merged = new Map()
+
+    for (const item of online_values) {
+        merged.set(item.name || item.id, item)
+    }
+
+    for (const item of local_values) {
+        merged.set(item.name || item.id, item)
+    }
+
+    return Array.from(merged.values())
+}
+
 export async function load_values(name) {
     const local_values = local_database.load_values(name)
     const online_values = (await (await supabase.from(name).select("*")).data)
@@ -35,7 +49,7 @@ export async function load_values(name) {
         console.warn("Online values not present")
     }
 
-    return online_values || local_values
+    return merge_values(local_values, online_values)
 }
 
 function sync_to_database(name, load_function) {
@@ -46,8 +60,9 @@ function sync_to_database(name, load_function) {
 export const refresh_values = (name) => async (database) =>
     {
         database.updating = true
-        await local_database.apply(database, local_database.set(await load_values(name)))
+        let refreshed = await local_database.apply(database, local_database.set(await load_values(name)))
         database.updating = false
+        return refreshed
     }
 
 export async function create_database(name) {

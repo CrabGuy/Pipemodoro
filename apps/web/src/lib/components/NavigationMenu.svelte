@@ -7,10 +7,8 @@
     import { get } from "svelte/store";
     import { goto } from "$app/navigation";
     import { page } from "$app/state";
-    
-    console.log(page.url.pathname);
-    
-    
+
+
     const SECTIONS = [
         {
             url: "/",

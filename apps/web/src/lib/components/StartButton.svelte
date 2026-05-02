@@ -6,6 +6,7 @@
     
     function onclick() {
         create_timer(timer_duration[timer_type], label)
+        Notification.requestPermission()
     }
 
 </script>

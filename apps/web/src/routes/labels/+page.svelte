@@ -49,19 +49,21 @@
 
 <div class="main_container">
     <div class="labels_container">
-        <Button style="width: 10rem"
-        onclick={() => {creation_open = true}}
-        >
-        <Icon icon={new_label}></Icon>
-        New Label</Button>
+        <div>
+            <Button style="width: 10rem; heigth: 3rem"
+            onclick={() => {creation_open = true}}
+            >
+            <Icon icon={new_label}></Icon>
+            New Label</Button>
+        </div>
         {#if !updating}
             {#each labels as label}
                 <Card
                 variant={selected_label.name == label.name? "filled" : "outlined"}
                 onclick={() => selected_label = label}
                 >
-                <div style="display: flex; justify-items: center;">
-                    <h2>{label.name}</h2>
+                <div style="display: flex; justify-items: center; width: 30rem;">
+                    <h2 style="display: block;overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">{(label.name)}</h2>
                 </div>
                 </Card>
             {/each}
@@ -93,6 +95,7 @@
         justify-content: space-around;
         width: 100vw;
         height: 100vh;
+        overflow: auto;
     }
     
     .labels_container {
