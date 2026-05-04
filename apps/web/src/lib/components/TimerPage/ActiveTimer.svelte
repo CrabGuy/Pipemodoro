@@ -1,8 +1,15 @@
-<script>
+<script lang="ts">
     import Timer from "./Timer.svelte";
-    import { tweened } from "svelte/motion";
     
-    let { created_at, ends_at, on_expire } = $props()
+    let { 
+        created_at,
+        ends_at,
+        on_expire
+    }: {
+        created_at: number,
+        ends_at: number,
+        on_expire: () => void
+    } = $props()
 
     const ms_total = $derived(ends_at - created_at)
 
@@ -10,7 +17,7 @@
     let ms_left = $state(ends_at - Date.now())
 
     $effect(() => {
-        let raf
+        let raf: number
 
         const tick = () => {
             ms_left = ends_at - Date.now()

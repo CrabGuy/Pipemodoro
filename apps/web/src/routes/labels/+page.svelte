@@ -1,5 +1,5 @@
 <script>
-    import { Button, Divider, Card, Icon, Dialog, TextFieldOutlined } from "m3-svelte";    
+    import { Button, Divider, Card, Icon, Dialog, TextFieldOutlined, snackbar, Snackbar } from "m3-svelte";    
     import LabelInfoCard from "$lib/components/LabelInfoCard.svelte";
     import { get_values, create_label, remove_label, is_updating } from "$lib/labels.svelte";
     import new_label from "@ktibow/iconset-material-symbols/new-label"
@@ -27,6 +27,10 @@
     {#snippet buttons()}
         <Button variant="outlined">Cancel</Button>
         <Button onclick={() => {
+            if (!name_new_label) {
+                snackbar("Invalid name")
+                return
+            }
             create_label(name_new_label, webhook_new_label)
             creation_open = false
         }} >Create</Button>
@@ -47,7 +51,7 @@
     {/snippet}
 </Dialog>
 
-<div class="main_container">
+<div class="main_container1">
     <div class="labels_container">
         <div>
             <Button style="width: 10rem; heigth: 3rem"
@@ -87,10 +91,12 @@
             <div class="idle_container">Select a label...</div>
         {/if}
     </div>
+
+    <Snackbar/>
 </div>
 
 <style>
-    .main_container {
+    .main_container1 {
         display: flex;
         justify-content: space-around;
         width: 100vw;

@@ -7,7 +7,7 @@ export async function create_label(name, webhook) {
     const user_id = user?.value?.id
     
     apply(labels_store, insert({
-        id: user_id,
+        user_id: user_id,
         webhook: webhook,
         name: name
     }))

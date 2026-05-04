@@ -1,5 +1,5 @@
 <script>
-    import Timer from "./Timer.svelte";
+    import Timer from "$lib/components/TimerPage/Timer.svelte";
     const { ms } = $props()
 </script>
 

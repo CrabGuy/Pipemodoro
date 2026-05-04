@@ -1,8 +1,8 @@
-<script>
+<script lang="ts">
     import ControlButton from "./ControlButton.svelte";
     import timer_off from "@ktibow/iconset-material-symbols/timer-off"
     import { cancel_timer } from "$lib/timers.svelte";
-    const {client_timer_id} = $props()
+    const {client_timer_id}: {client_timer_id: string} = $props()
 
 </script>
 

@@ -41,9 +41,17 @@ function merge_values(local_values, online_values = []) {
     return Array.from(merged.values())
 }
 
+function load_local_values(name) {
+    return local_database.load_values(name)
+}
+
+async function load_online_values(name) {
+    return (await (await supabase.from(name).select("*")).data)
+}
+
 export async function load_values(name) {
-    const local_values = local_database.load_values(name)
-    const online_values = (await (await supabase.from(name).select("*")).data)
+    const local_values = load_local_values(name)
+    const online_values = await load_online_values(name)
 
     if (!online_values) {
         console.warn("Online values not present")
@@ -59,6 +67,7 @@ function sync_to_database(name, load_function) {
 
 export const refresh_values = (name) => async (database) =>
     {
+        local_database.apply(database, local_database.set(load_local_values(name)))
         database.updating = true
         let refreshed = await local_database.apply(database, local_database.set(await load_values(name)))
         database.updating = false

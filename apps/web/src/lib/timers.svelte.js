@@ -24,16 +24,17 @@ export async function refresh_timers() {
     return await refresh_values(timer_store.name)(timer_store)
 }
 
-export async function create_timer(duration, label) {    
+export async function create_timer(duration, timer_type, label) {    
     const client_timer_id = crypto.randomUUID()
     const user_id = user?.value?.id
 
     apply(timer_store, insert({
-        uuid: user_id,
+        user_id: user_id,
         created_at: (new Date(Date.now())).toISOString(),
         ends_at: (new Date(Date.now() + duration)).toISOString(),
         client_timer_id: client_timer_id,
-        label: label,
+        label: label || null,
+        timer_type: timer_type,
     }))
 }
 
