@@ -20,5 +20,5 @@ export async function remove_label(name) {
     }))
 }
 
-export const get_values = () => labels_store.values
+export const get_labels = () => labels_store.values
 export const is_updating = () => labels_store.updating

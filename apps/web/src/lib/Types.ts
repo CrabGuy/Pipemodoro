@@ -10,3 +10,8 @@ export type TimerType = {
     timer_type: string,
 }
 
+export type LabelType = {
+    name: string,
+    webhook?: string,
+    user_id: string,
+}

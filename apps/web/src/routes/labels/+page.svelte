@@ -1,55 +1,42 @@
-<script>
+<script lang="ts">
     import { Button, Divider, Card, Icon, Dialog, TextFieldOutlined, snackbar, Snackbar } from "m3-svelte";    
-    import LabelInfoCard from "$lib/components/LabelInfoCard.svelte";
-    import { get_values, create_label, remove_label, is_updating } from "$lib/labels.svelte";
+    import { get_labels, create_label, remove_label, is_updating } from "$lib/labels.svelte";
     import new_label from "@ktibow/iconset-material-symbols/new-label"
-    
-    const labels = $derived(get_values())
-    const updating = $derived(is_updating())
+    import CreationDialog from "$lib/components/LabelsPage/CreationDialog.svelte";
+    import DeletionDialog from "$lib/components/LabelsPage/DeletionDialog.svelte";
+    import type { LabelType } from "$lib/Types";
+    import LabelsList from "$lib/components/LabelsPage/LabelsList.svelte";
+    import LabelInfoCard from "$lib/components/LabelsPage/LabelInfoCard.svelte";
+    import DeleteButton from "$lib/components/LabelsPage/DeleteButton.svelte";
+    import { get_timers } from "$lib/timers.svelte";
 
-    let selected_label = $state({})
     let creation_open = $state(false)
+    const toggle_creation = () => {creation_open = !creation_open}
     let deletion_open = $state(false)
+    const toggle_deletion = () => {deletion_open = !deletion_open}
 
-    let name_new_label = $state("")
-    let webhook_new_label = $state("")
+    const labels = $derived(get_labels())
+    const updating = $derived(is_updating())
+    
+    const timers = $derived(get_timers())
+
+    let selected_label: LabelType | undefined = $state(undefined)
 </script>
 
-<Dialog headline="New label!" bind:open={creation_open}>
-    <div style="display: flex; flex-direction: column; gap: 1rem; width: 30rem">
-        <p>Do you want to create a new label?</p>
-        <TextFieldOutlined bind:value={name_new_label} label="Name"></TextFieldOutlined>
-        <TextFieldOutlined bind:value={webhook_new_label} label="Webhook"></TextFieldOutlined>
-        <a class="helper_link"
-        href="https://example.com"
-        >What is a webhook?</a>
-    </div>
-    {#snippet buttons()}
-        <Button variant="outlined">Cancel</Button>
-        <Button onclick={() => {
-            if (!name_new_label) {
-                snackbar("Invalid name")
-                return
-            }
-            create_label(name_new_label, webhook_new_label)
-            creation_open = false
-        }} >Create</Button>
-    {/snippet}
-</Dialog>
+{#if creation_open}
+    <CreationDialog
+        on_creation={toggle_creation}
+        on_cancel={toggle_creation}
+    />
+{/if}
 
-<Dialog headline="Bad label!" bind:open={deletion_open}>
-    <div style="display: flex; flex-direction: column; gap: 1rem; width: 30rem">
-        <p>Are you sure you want to delete this label?</p>
-    </div>
-    {#snippet buttons()}
-        <Button variant="outlined">Nevermind</Button>
-        <Button onclick={() => {
-            remove_label(selected_label.name)
-            deletion_open = false
-            selected_label = {}
-        }}>Delete</Button>
-    {/snippet}
-</Dialog>
+{#if deletion_open}
+    <DeletionDialog
+        {selected_label}
+        on_deletion={toggle_deletion}
+        on_cancel={toggle_deletion}
+    />
+{/if}
 
 <div class="main_container1">
     <div class="labels_container">
@@ -61,17 +48,12 @@
             New Label</Button>
         </div>
         {#if !updating}
-            {#each labels as label}
-                <Card
-                variant={selected_label.name == label.name? "filled" : "outlined"}
-                onclick={() => selected_label = label}
-                >
-                <div style="display: flex; justify-items: center; width: 30rem;">
-                    <h2 style="display: block;overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">{(label.name)}</h2>
-                </div>
-                </Card>
-            {/each}
+            <LabelsList
+            {labels}
+            on_selection={(label) => selected_label = label}
+            />
         {:else}
+            <!-- TODO: Make this modular -->
             {#each Array(3)}
                 <Card
                 variant="outlined"
@@ -85,8 +67,16 @@
         {/if}
     </div>
     <div class="info_container">
-        {#if selected_label.name}
-            <LabelInfoCard {selected_label} on_delete={() => {deletion_open = true}} />
+        {#if selected_label && selected_label.name}
+            <LabelInfoCard
+            label={selected_label}
+            {timers}
+            >
+                <DeleteButton
+                    label={selected_label}
+                    onclick={toggle_deletion}
+                />
+            </LabelInfoCard>
         {:else}
             <div class="idle_container">Select a label...</div>
         {/if}
@@ -124,16 +114,5 @@
         align-self: center;
         color: var(--m3c-surface-container-high);
         text-align: center;
-    }
-
-    .helper_link {
-        color: var(--m3c-on-surface-variant);
-        font-size: 0.75rem;
-        text-decoration: none;
-    }
-
-    .helper_link:hover {
-        text-decoration: underline;
-        color: var(--m3c-on-surface);
     }
 </style>

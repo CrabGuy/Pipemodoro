@@ -15,9 +15,18 @@
 - ActiveTimer(active_timer, current_time()) $\rightarrow$ Pipemodoro(timers, labels, TimersPage)  
 - CancelButton(active_timer) $\rightarrow$ Pipemodoro(set_canceled(active_timer, timers), labels, TimersPage)
 
+## LabelsPage(timers, labels, selected_label?)
+- CreateLabel $\rightarrow$ CreationDialog(labels)
 
-## LabelsPage(timers, labels)
-- CreateLabel $\rightarrow$ Pipemodoro(timers, new:labels, LabelsPage)
+### CreationDialog(labels)
+- LabelNameField $\rightarrow$ new_label_name
+- LabelWebhookField $\rightarrow$ new_label_webhook
+- CreateButton $\rightarrow$ Pipemodoro(timers, new:labels, LabelsPage)
+- CancelCreationButton $\rightarrow$ LabelsPage(timers, labels, selected_label)
+
+### DeletionDialog(labels, selected_label)
+- DeleteButton(selected_label) $\rightarrow$ Pipemodoro(timers, remove(labels, selected_label), LabelsPage)
+- CancelDeletionButton $\rightarrow$ LabelsPage(timers, labels, selected_label)
 
 ### UnselectedLabel(labels)
 - LabelsList(labels) $\rightarrow$ SelectedLabel(labels, selected_label)
@@ -25,7 +34,7 @@
 ### SelectedLabel(labels, selected_label)
 - LabelsList(labels) $\rightarrow$ SelectedLabel(labels, selected_label)
 - LabelsInfoCard(selected_label, info(timers, selected_label))
-- DeleteLabel(selected_label) $\rightarrow$ Pipemodoro(timers, remove(labels, selected_label), LabelsPage)
+- DeleteLabel(selected_label) $\rightarrow$ DeletionDialog(labels, selected_label)
 
 
 ## AccountPage(account?)
