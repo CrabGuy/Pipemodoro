@@ -2,7 +2,7 @@
     import type { LabelType } from "$lib/Types";
     import { Card } from "m3-svelte";
 
-    let {
+    const {
         labels,
         selected_label,
         on_selection

@@ -3,7 +3,7 @@
     import type { LabelType } from "$lib/Types";
     import { Button, Dialog } from "m3-svelte";
 
-    let {
+    const {
         selected_label,
         on_deletion,
         on_cancel,

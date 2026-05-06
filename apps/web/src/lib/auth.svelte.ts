@@ -1,7 +1,7 @@
-import { writable } from "svelte/store";
 import { supabase } from "$lib/supabase_client";
+import type { User } from "@supabase/supabase-js";
 
-export let user = $state({value: null});
+export let user: {value: User | null} = $state({value: null});
 
 const {data} = await supabase.auth.getUser()
 

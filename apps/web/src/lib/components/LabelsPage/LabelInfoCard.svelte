@@ -4,7 +4,7 @@
     import { Card, Divider } from "m3-svelte";
     import type { Snippet } from "svelte";
 
-    let {
+    const {
         label,
         timers,
         children,

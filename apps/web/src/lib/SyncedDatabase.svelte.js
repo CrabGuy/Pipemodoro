@@ -31,11 +31,11 @@ function merge_values(local_values, online_values = []) {
     const merged = new Map()
 
     for (const item of online_values) {
-        merged.set(item.name || item.id, item)
+        merged.set(item.name || item.client_timer_id, item)
     }
 
     for (const item of local_values) {
-        merged.set(item.name || item.id, item)
+        merged.set(item.name || item.client_timer_id, item)
     }
 
     return Array.from(merged.values())

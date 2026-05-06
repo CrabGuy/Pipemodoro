@@ -3,6 +3,7 @@
     import add from "@ktibow/iconset-material-symbols/add-2"
     import { goto } from "$app/navigation";
 
+    // TODO: Fix this and make it return the value with a function and not a bidable
     let {
         labels,
         selected_label = $bindable()

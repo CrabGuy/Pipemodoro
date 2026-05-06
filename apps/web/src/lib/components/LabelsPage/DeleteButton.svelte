@@ -4,7 +4,7 @@
     import { Button } from "m3-svelte";
     import label_off from "@ktibow/iconset-material-symbols/label-off"
 
-    let {
+    const {
         label,
         onclick,
     }: {

@@ -1,11 +1,11 @@
 <script lang="ts">
     import { Button, Icon } from "m3-svelte";
     import type { IconifyIcon } from "iconify-icon";
-    let {text, onclick, icon, size = "l"}: {
+    const {text, onclick, icon, size = "l"}: {
         text: string,
         onclick: () => void,
         icon: IconifyIcon,
-        size: "s" | "l" | "xs" | "m" | "xl",
+        size?: "s" | "l" | "xs" | "m" | "xl",
     } = $props()
 </script>
 

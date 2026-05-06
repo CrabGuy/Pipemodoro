@@ -50,6 +50,7 @@
 - AccountStats(timers, labels)
   - TimeSelector(time_frames) $\rightarrow$ time_frame
   - StatsList(timers, labels, time_frame)
+- SignOut $\rightarrow$ LoginForm()
 
 ### Loading(promise)
 - resolve(promise) $\rightarrow$ AccountInfo(resolve(promise))

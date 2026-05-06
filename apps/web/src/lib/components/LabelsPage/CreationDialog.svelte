@@ -2,7 +2,7 @@
     import { create_label } from "$lib/labels.svelte";
     import { Button, Dialog, TextFieldOutlined, snackbar } from "m3-svelte";
 
-    let {
+    const {
         on_creation,
         on_cancel,
     }: {

@@ -1,7 +1,7 @@
 <script lang="ts">
     import Timer from "./Timer.svelte";
     
-    let { 
+    const { 
         created_at,
         ends_at,
         on_expire

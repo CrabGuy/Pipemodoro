@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import {CircularProgress, TextFieldMultiline, Button} from "m3-svelte"
     import { Tween } from "svelte/motion";
     import { linear } from "svelte/easing";
@@ -25,7 +25,9 @@
     <div class="timer_container">
         <CircularProgress
         percent = {percentage_passed}
-        thickness = 3
+        thickness = {3}
+        // ?????? i have no idea what this is for but it gives an error if i dont set it
+        aria-labelledby = ""
         ></CircularProgress>
     </div>
 </div>
