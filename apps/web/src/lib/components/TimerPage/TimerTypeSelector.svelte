@@ -3,13 +3,14 @@
 
     type TimerType = {name: string, duration: number}
 
-    // TODO: Fix this and make it return the value with a function and not a bidable
     let {
         timer_types,
         selected_timer_type = $bindable(),
+        on_selection,
     }: {
         timer_types: TimerType[],
-        selected_timer_type : TimerType
+        selected_timer_type : TimerType,
+        on_selection: (timer_type: TimerType) => void
     } = $props()
 </script>
 
@@ -17,7 +18,7 @@
     <SelectionButtons
     options={timer_types}
     selected = {selected_timer_type}
-    on_selection = {(option) => selected_timer_type = option}
+    {on_selection}
     format={(timer_type: TimerType) => timer_type.name}
     />
 </div>

@@ -3,13 +3,14 @@
     import add from "@ktibow/iconset-material-symbols/add-2"
     import { goto } from "$app/navigation";
 
-    // TODO: Fix this and make it return the value with a function and not a bidable
     let {
         labels,
-        selected_label = $bindable()
+        selected_label,
+        on_selection,
     }: {
         labels: string[],
         selected_label: string,
+        on_selection: (label: string) => void
     } = $props()
 </script>
 
@@ -17,7 +18,7 @@
     {#each labels as label}
         <Chip
         variant="general"
-        onclick={() => {selected_label == label ? (selected_label = "") : (selected_label = label)}}
+        onclick={() => {on_selection(selected_label == label ? "" : label)}}
         selected={selected_label == label}
         >
             <span style="max-width: 5rem; white-space: nowrap; overflow: hidden; display: block; text-overflow: ellipsis;">

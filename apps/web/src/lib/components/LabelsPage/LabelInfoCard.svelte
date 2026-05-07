@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { LabelType, TimerType } from "$lib/Types";
+    import type { LabelType, Timer } from "$lib/Types";
     import { duration, format_time } from "$lib/utils";
     import { Card, Divider } from "m3-svelte";
     import type { Snippet } from "svelte";
@@ -10,7 +10,7 @@
         children,
     }: {
         label: LabelType,
-        timers: TimerType[],
+        timers: Timer[],
         children: Snippet<[]>
     } = $props()
 

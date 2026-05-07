@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { TimerType } from "$lib/Types";
+    import type { Timer } from "$lib/Types";
     import TimerTypeShower from "$lib/components/TimerPage/TimerTypeShower.svelte";
     import ActiveTimer from "$lib/components/TimerPage/ActiveTimer.svelte";
     import { refresh_timers } from "$lib/timers.svelte";
@@ -9,7 +9,7 @@
     const {
         active_timer
     }: {
-        active_timer: TimerType
+        active_timer: Timer
     } = $props()
     
     const milliseconds = (ISO: string) => (new Date(ISO)).getTime()

@@ -33,7 +33,8 @@
 <div class="main_container">
     <TimerTypeSelector
         timer_types={TIMER_TYPES}
-        bind:selected_timer_type
+        {selected_timer_type}
+        on_selection = {(timer_type) => selected_timer_type = timer_type}
     />
 
     <StillTimer
@@ -42,7 +43,8 @@
 
     <LabelSelector
         {labels}
-        bind:selected_label
+        {selected_label}
+        on_selection = {(label) => selected_label = label}
     />
 
     <StartButton

@@ -11,7 +11,7 @@
         goto("/account/auth/login")
     }
 
-    const email = $derived(user?.value?.email)
+    const email = $derived(user?.value?.email || "")
     const timers = $derived(get_timers())
 </script>
 
@@ -27,7 +27,7 @@
     <h1>Account details</h1>
     <div style="display: flex; width: 100%; gap: 1rem; justify-content: space-around;">
         <AccountDisplay
-            email={email || ""}
+            {email}
         />
 
         <AccountStats

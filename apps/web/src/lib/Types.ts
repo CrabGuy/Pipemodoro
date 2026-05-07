@@ -1,4 +1,4 @@
-export type TimerType = {
+export type Timer = {
     id: number,
     created_at: string,
     ends_at: string,

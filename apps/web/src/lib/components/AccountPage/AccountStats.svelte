@@ -1,6 +1,6 @@
 <script lang="ts">
     import SelectionButtons from '$lib/components/SelectionButtons.svelte';
-    import type { TimerType } from '$lib/Types';
+    import type { Timer } from '$lib/Types';
     import { average, duration, format_time, most_frequent } from '$lib/utils';
     import Icon from '@iconify/svelte';
     import { Card } from 'm3-svelte';
@@ -8,7 +8,7 @@
     const {
         timers
     }: {
-        timers: TimerType[]
+        timers: Timer[]
     } = $props()
 
     const TIME_PERIODS = [
@@ -29,10 +29,10 @@
     let time_period = $state(TIME_PERIODS[TIME_PERIODS.length - 1])
 
 
-    const label = (timer: TimerType) => timer.label
+    const label = (timer: Timer) => timer.label
 
-    const succesful_timers = $derived(timers.filter((timer: TimerType) => !timer.canceled))
-    const in_range_timers = $derived(succesful_timers.filter((timer: TimerType) => new Date(timer.created_at).getTime() > Date.now() - time_period.duration))
+    const succesful_timers = $derived(timers.filter((timer: Timer) => !timer.canceled))
+    const in_range_timers = $derived(succesful_timers.filter((timer: Timer) => new Date(timer.created_at).getTime() > Date.now() - time_period.duration))
 
     const completed_timers = $derived(timers.length)
     const completion_rate = $derived(Math.round(in_range_timers.length / timers.length * 100) / 100 || 0)
@@ -53,6 +53,7 @@
 <div style="display: flex; justify-content: space-around; flex-direction: column; gap: 2rem">
     <div style="height: 2rem; align-self: center">
         <SelectionButtons
+        size = "s"
         options = {TIME_PERIODS}
         selected = {time_period}
         format = {(period) => period.name}
