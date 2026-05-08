@@ -57,7 +57,7 @@
         options = {TIME_PERIODS}
         selected = {time_period}
         format = {(period) => period.name}
-        on_selection = {(period) => time_period = period}
+        on_selection = {(period) => {time_period = period}}
         />
     </div>
 

@@ -36,7 +36,7 @@
     .wrapper {
         display: grid;
     }
-    
+
     output, .timer_container {
         grid-area: 1 / 1;
     }
@@ -44,14 +44,15 @@
     output {
         display: block;
         font-family: 'Inter', sans-serif;
-        font-size: 6rem;
+        font-size: 6cqi;
         place-self: center;
-        z-index: 1;
+        z-index: 0;
     }
-    
+
     .timer_container :global(svg) {
-        width: 30rem;
-        height: 30rem;
+        width: 60vw;
+        height: 60vh;
+        aspect-ratio: 1 / 1;
     }
 
     .timer_container {

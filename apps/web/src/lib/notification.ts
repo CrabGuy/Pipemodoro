@@ -1,4 +1,4 @@
-export async function send_notification(title, options) {
+export async function send_notification(title: string, options?: NotificationOptions) {
     if (Notification.permission == "default") {
         await Notification.requestPermission()
         send_notification(title, options)

@@ -1,17 +1,18 @@
 export type Timer = {
-    id: number,
+    id?: number,
     created_at: string,
     ends_at: string,
     canceled: boolean,
     client_timer_id: string,
     label: string | null,
     fired: boolean,
-    user_id: string,
+    user_id?: string,
     timer_type: string,
+    expired?: boolean
 }
 
 export type LabelType = {
     name: string,
     webhook?: string,
-    user_id: string,
+    user_id?: string,
 }

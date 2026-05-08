@@ -3,6 +3,8 @@
     import StillTimer from "$lib/components/TimerPage/StillTimer.svelte";
     import LabelSelector from "$lib/components/TimerPage/LabelSelector.svelte";
     import StartButton from "$lib/components/TimerPage/StartButton.svelte";
+    import SelectionButtons from "../SelectionButtons.svelte";
+    type TimerType = {name: string, duration: number}
 
     const {
         labels
@@ -34,7 +36,7 @@
     <TimerTypeSelector
         timer_types={TIMER_TYPES}
         {selected_timer_type}
-        on_selection = {(timer_type) => selected_timer_type = timer_type}
+        on_selection = {(timer_type) => {selected_timer_type = timer_type}}
     />
 
     <StillTimer

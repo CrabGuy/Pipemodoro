@@ -3,9 +3,9 @@
 
     type TimerType = {name: string, duration: number}
 
-    let {
+    const {
         timer_types,
-        selected_timer_type = $bindable(),
+        selected_timer_type,
         on_selection,
     }: {
         timer_types: TimerType[],
@@ -14,11 +14,12 @@
     } = $props()
 </script>
 
-<div style="align-self: center;">
+<!-- Z-index 1 otherwise it gets clipped on big displays by the timer svg -->
+<div style="align-self: center; z-index: 1;">
     <SelectionButtons
-    options={timer_types}
-    selected = {selected_timer_type}
-    {on_selection}
-    format={(timer_type: TimerType) => timer_type.name}
+        options = {timer_types}
+        selected = {selected_timer_type}
+        format = {(timer_type: TimerType) => timer_type.name}
+        {on_selection}
     />
 </div>
