@@ -53,7 +53,6 @@
             on_selection={(label) => selected_label = label}
             />
         {:else}
-            <!-- TODO: Make this modular -->
             {#each Array(3)}
                 <Card
                 variant="outlined"

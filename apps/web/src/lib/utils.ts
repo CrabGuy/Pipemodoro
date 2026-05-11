@@ -1,27 +1,29 @@
-export const average = (numbers) => {
+import type { Timer } from "$lib/Types";
+
+export const average = (numbers: number[]) => {
     if (numbers.length === 0) return 0
 
     const sum = numbers.reduce((acc, num) => acc + num, 0)
     return sum / numbers.length
 }
 
-export const most_frequent = (arr) => {
+export const most_frequent = <T>(arr: T[]): T | null => {
     if (arr.length === 0) return null
 
-    const frequency_map = arr.reduce((acc, val) => {
-        acc[val] = (acc[val] ?? 0) + 1
-        return acc
-    }, {})
+    const map = new Map<T, number>()
 
-    return Object.entries(frequency_map)
-        .reduce((a, b) => (b[1] >= a[1] ? b : a))[0]
+    for (const item of arr) {
+        map.set(item, (map.get(item) ?? 0) + 1)
+    }
+
+    return [...map.entries()].reduce((a, b) => (b[1] >= a[1] ? b : a))[0]
 }
 
-export const duration = (timer) => new Date(timer.ends_at).getTime() - new Date(timer.created_at).getTime()
+export const duration = (timer: Timer) => new Date(timer.ends_at).getTime() - new Date(timer.created_at).getTime()
 
 export const nothing = () => {}
 
-export function format_time(ms) {
+export function format_time(ms: number) {
   const totalSeconds = Math.floor(ms / 1000)
   const hours   = Math.floor(totalSeconds / 3600)
   const minutes = Math.floor((totalSeconds % 3600) / 60)

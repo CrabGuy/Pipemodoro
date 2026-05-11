@@ -1,10 +1,8 @@
-<script>
-    import { NavigationRail, NavigationRailItem, addBadge } from "m3-svelte";
+<script lang="ts">
+    import { NavigationRail, NavigationRailItem } from "m3-svelte";
     import timer from "@ktibow/iconset-material-symbols/timer"
     import person from "@ktibow/iconset-material-symbols/person";
     import book from "@ktibow/iconset-material-symbols/book"
-    import { settings } from "$lib/settings.svelte";
-    import { get } from "svelte/store";
     import { goto } from "$app/navigation";
     import { page } from "$app/state";
 

@@ -1,10 +1,10 @@
-<script>
+<script lang="ts">
     import { goto } from "$app/navigation";
     import AccountForm from "$lib/components/AccountPage/AccountForm.svelte";
     import { Button } from "m3-svelte";
     import { supabase } from "$lib/supabase_client";
 
-    async function login(email, password) {
+    async function login(email: string, password: string) {
         const {error} = await supabase.auth.signInWithPassword({email, password})
 
         if (error) {

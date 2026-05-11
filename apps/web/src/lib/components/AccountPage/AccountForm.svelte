@@ -1,9 +1,5 @@
-<script>
-    import { TextFieldOutlined, Button } from "m3-svelte";
-    import { supabase } from "$lib/supabase_client";   
-    import { goto } from "$app/navigation";
-    import { page } from "$app/state";
-    import { onMount } from "svelte";
+<script lang="ts">
+    import { TextFieldOutlined } from "m3-svelte";
     
     let email = $state("")
     let password = $state("")
