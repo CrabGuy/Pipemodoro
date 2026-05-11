@@ -16,7 +16,7 @@ export const remove = <T extends Record<string, unknown>>({column, value}: {colu
         return local_database.remove((record: Record<string, unknown>) => record[column] == value)(database)
     }
 
-export const update = <T extends Record<string, unknown>>({column, value}: {column: string, value: unknown}, updater: local_database.Updater) =>
+export const update = <T extends Record<string, unknown>>({column, value}: {column: string, value: unknown}, updater: local_database.Updater<T>) =>
     async (database: SyncedDatabase<T>) => {
         const is_correct_record = (record: local_database.Entry<T>) => record[column] == value
 

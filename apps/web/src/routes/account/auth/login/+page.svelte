@@ -3,6 +3,7 @@
     import AccountForm from "$lib/components/AccountPage/AccountForm.svelte";
     import { Button } from "m3-svelte";
     import { supabase } from "$lib/supabase_client";
+    import { refresh_timers } from "$lib/timers.svelte";
 
     async function login(email: string, password: string) {
         const {error} = await supabase.auth.signInWithPassword({email, password})
@@ -11,7 +12,8 @@
             alert(error.message)
             return
         }
-        goto("/")
+        goto("/account/")
+        refresh_timers()
     }
 </script>
 

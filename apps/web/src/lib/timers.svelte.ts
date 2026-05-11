@@ -4,10 +4,6 @@ import type { Timer } from "$lib/Types";
 
 let timer_store = (await create_database<Timer>("Timers"))
 
-$effect.root(() => {
-    $inspect(timer_store)
-})
-
 export const is_active = (timer: Timer) =>
     ((new Date(timer.ends_at)).getTime() >= Date.now())
     && !timer.expired

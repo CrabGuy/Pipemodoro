@@ -11,7 +11,7 @@
             alert(error.message)
             return
         }
-        goto("/")
+        goto("/account/")
     }
 </script>
 

@@ -8,7 +8,7 @@ export type LocalDatabase<T extends Record<string, unknown>> = {
 }
 
 type Predicate<T extends Record<string, unknown>> = (record: Entry<T>) => boolean
-export type Updater = <T extends Record<string, unknown>>(record: Entry<T>) => Entry<T>
+export type Updater<T extends Record<string, unknown>> = (record: Entry<T>) => Entry<T>
 
 export const insert = <T extends Record<string, unknown>>(record: Entry<T>) => 
     (database: LocalDatabase<T>): Values<T> => [...database.values, record]
@@ -16,7 +16,7 @@ export const insert = <T extends Record<string, unknown>>(record: Entry<T>) =>
 export const remove = <T extends Record<string, unknown>>(predicate: Predicate<T>) =>
     (database: LocalDatabase<T>): Values<T> => database.values.filter((record) => !predicate(record))
 
-export const update = <T extends Record<string, unknown>>(predicate: Predicate<T>, updater: Updater) =>
+export const update = <T extends Record<string, unknown>>(predicate: Predicate<T>, updater: Updater<T>) =>
     (database: LocalDatabase<T>): Values<T> => database.values.map((record) => predicate(record) ? updater(record) : record)
 
 export const select = <T extends Record<string, unknown>>(predicate: Predicate<T>) =>

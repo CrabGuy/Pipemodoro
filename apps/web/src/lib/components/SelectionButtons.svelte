@@ -14,9 +14,6 @@
         size?: "s" | "l" | "xs" | "m" | "xl",
     } = $props()
 
-
-    $inspect(options)
-    $inspect(selected)
 </script>
 
 <ConnectedButtons>
