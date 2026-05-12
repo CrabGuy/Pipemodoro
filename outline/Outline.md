@@ -1,6 +1,7 @@
+This is an outline of how the project is structured, consider this a sort of diagram but made using markdown.
+
 # Pipemodoro(timers, labels, page, account?)
 - NavigationBar(pages) $\rightarrow$ Pipemodoro(timers, labels, new_page)
-
 
 ## TimersPage(timers, labels)
 
