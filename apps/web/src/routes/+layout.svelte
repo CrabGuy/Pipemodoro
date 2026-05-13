@@ -6,7 +6,7 @@
 </script>
 
 <svelte:head>
-	<link rel="manifest" href="%sveltekit.base%/manifest.webmanifest" />
+	<link rel="manifest" href="/manifest.webmanifest" />
 </svelte:head>
 
 <NavigationMenu></NavigationMenu>

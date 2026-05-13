@@ -9,17 +9,17 @@
 
     const SECTIONS = [
         {
-            url: "%sveltekit.base%/",
+            url: "/",
             label: "Timers",
             icon: timer
         },
         {
-            url: "%sveltekit.base%/labels",
+            url: "/labels",
             label: "Labels",
             icon: book
         },
         {
-            url: "%sveltekit.base%/account",
+            url: "/account",
             label: "Account",
             icon: person
         },
