@@ -44,14 +44,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload the merged folder instead
           path: 'public_deploy'
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          # Ensure this path matches where Svelte outputs your build
-          path: 'apps/web/build'
 
   deploy:
     needs: build
