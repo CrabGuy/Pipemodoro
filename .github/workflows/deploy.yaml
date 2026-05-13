@@ -34,6 +34,19 @@ jobs:
         working-directory: apps/web
         run: npm run build
 
+      # New Step: Merge folders for deployment
+      - name: Prepare Deployment Folder
+        run: |
+          mkdir public_deploy
+          cp -r apps/web/build/* public_deploy/
+          cp -r docs public_deploy/docs
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Upload the merged folder instead
+          path: 'public_deploy'
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
