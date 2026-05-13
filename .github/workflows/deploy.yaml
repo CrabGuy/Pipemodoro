@@ -26,6 +26,7 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
+          working-directory: apps/web
 
       - name: Install web dependencies
         working-directory: apps/web
