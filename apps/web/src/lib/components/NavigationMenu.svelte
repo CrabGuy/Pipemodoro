@@ -5,21 +5,21 @@
     import book from "@ktibow/iconset-material-symbols/book"
     import { goto } from "$app/navigation";
     import { page } from "$app/state";
-
+    import { resolve } from "$app/paths";
 
     const SECTIONS = [
         {
-            url: "/",
+            url: resolve("/"),
             label: "Timers",
             icon: timer
         },
         {
-            url: "/labels",
+            url: resolve("/labels"),
             label: "Labels",
             icon: book
         },
         {
-            url: "/account",
+            url: resolve("/account"),
             label: "Account",
             icon: person
         },

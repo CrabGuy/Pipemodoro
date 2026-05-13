@@ -6,9 +6,10 @@
     import { supabase } from "$lib/supabase_client";
     import AccountDisplay from "$lib/components/AccountPage/AccountDisplay.svelte";
     import AccountStats from "$lib/components/AccountPage/AccountStats.svelte";
+    import { resolve } from "$app/paths";
 
     if (!(user.value && user.value.email)) {
-        goto("/account/auth/login")
+        goto(resolve("/account/auth/login"))
     }
 
     const email = $derived(user?.value?.email || "")
@@ -20,7 +21,7 @@
         <Button
         onclick={() => {
             supabase.auth.signOut()
-            goto("/account/auth/login")
+            goto(resolve("/account/auth/login"))
         }}
         >Sign out</Button>
     </div>

@@ -4,6 +4,7 @@
     import { Button } from "m3-svelte";
     import { supabase } from "$lib/supabase_client";
     import { refresh_timers } from "$lib/timers.svelte";
+    import { resolve } from "$app/paths";
 
     async function login(email: string, password: string) {
         const {error} = await supabase.auth.signInWithPassword({email, password})
@@ -12,7 +13,7 @@
             alert(error.message)
             return
         }
-        goto("/account/")
+        goto(resolve("/account"))
         refresh_timers()
     }
 </script>
@@ -23,7 +24,7 @@
     </div>
     <div style="align-self: center;">
         <Button size="m" variant="outlined"
-        onclick={() => {goto("/account/auth/signup")}}
+        onclick={() => {goto(resolve("/account/auth/signup"))}}
         >Don't have an account?</Button>
     </div>
 </AccountForm>

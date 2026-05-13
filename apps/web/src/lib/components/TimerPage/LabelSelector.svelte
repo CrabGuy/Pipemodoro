@@ -2,6 +2,7 @@
     import { Chip, Icon } from "m3-svelte";
     import add from "@ktibow/iconset-material-symbols/add-2"
     import { goto } from "$app/navigation";
+    import { resolve } from "$app/paths";
 
     let {
         labels,
@@ -27,7 +28,7 @@
         </Chip>
     {/each}
     <Chip variant="general"
-    onclick={() => goto("/labels")}
+    onclick={() => goto(resolve("/labels"))}
     >
         <Icon icon={add}></Icon>
     </Chip>
