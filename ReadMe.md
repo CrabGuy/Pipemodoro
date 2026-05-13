@@ -24,7 +24,7 @@ Account:
 
 You can use Pipemodoro directly in the browser:
 
-> **Website:** `https://crabguy.github.io/Pipemodoro/`  
+> **Website:** [`https://crabguy.github.io/Pipemodoro/`](https://crabguy.github.io/Pipemodoro/)  
 
 ---
 
@@ -68,7 +68,7 @@ If you wanna use your own supabase database instead of mine:
 
 For more information on how to use HTTP requests to modify timers or labels, database schema details or additional information on how to do things:
 
-> **Documentation:** `https://crabguy.github.io/Pipemodoro/docs`
+> **Documentation:** [`https://crabguy.github.io/Pipemodoro/docs`](https://crabguy.github.io/Pipemodoro/docs)
 
 ---
 
