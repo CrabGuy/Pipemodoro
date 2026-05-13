@@ -1,28 +1,26 @@
 # Pipemodoro 🍅
 
-Pipemodoro is a minimalist, pipeline-friendly Pomodoro-style timer built with Svelte 5 (SvelteKit) and Supabase. It is designed to sit in the middle of your workflows, letting you create timers programmatically and trigger webhooks when they complete.
-
-- Create labels, each with its own webhook URL
-- Start timers via `curl` or any HTTP client from anywhere in your pipeline
-- Run arbitrary operations when a timer ends (CI steps, webhooks, scripts, notifications)
-- Keep timers in sync across devices using the same account
-- Self-host everything for maximum privacy
-
-The application focuses on a solid, minimal core that still enables complex interactions through webhooks and your own scripts.
+**Pipemodoro** is a **minimalist pomodoro timer web application**. It is designed to help you focus on what you need to get done and, if you want, sit in the middle of a **pipeline of operations**!
 
 ---
 
 ## Features
 
-- **Pipeline-oriented timers**: Create and control timers via HTTP, so they plug naturally into shell scripts, CI jobs, and other automated workflows.
-- **Label-based webhooks**: Attach a webhook to each label; when a timer ends, Pipemodoro calls the corresponding endpoint.
-- **Sync across devices**: Timers are stored in Supabase and stay synced across all clients logged into the same account.
-- **Minimalist UI**: Clean, distraction-free interface focused on timing and labels, not clutter.
-- **Open source and self-hostable**: Run the full stack locally or deploy with your own Supabase instance for full data control and privacy.
+Pipe**modoro**:
+- **Timers**: Create and control timers
+- **Labels**: Create labels to track how much time you spend on each task
+
+**Pipe**modoro:
+- **More timers**: Start and stop timers via HTTP, so you can plug them in automated workflows
+- **More labels**: Attach webhooks to labels so when a timer ends you can run the next operation
+
+Account:
+
+- You can choose whether to create an account or not, but if you do timers will sync across devices with the same account!
 
 ---
 
-## Live app
+## Quick start
 
 You can use Pipemodoro directly in the browser:
 
@@ -30,17 +28,11 @@ You can use Pipemodoro directly in the browser:
 
 ---
 
-## Quick start
+## Run locally
 
-You can either use the hosted version (fastest) or run everything locally with your own Supabase project.
+You want to have all of the features with complete control over your data? in 2026?
 
-### Option 1: Use the hosted app
-
-1. Open the website (see **Live app** above).
-2. Create an account or sign in.
-3. You’re ready to go — follow the docs when you want to wire it into your pipelines.
-
-### Option 2: Run locally with your own Supabase
+Here you go:
 
 1. **Clone the repository**
 
@@ -49,16 +41,18 @@ You can either use the hosted version (fastest) or run everything locally with y
    cd Pipemodoro
    ```
 
-2. **Install dependencies**
+2. **Navigate to the web app folder and install dependencies**
 
    ```bash
+   cd apps/web
    npm install
    ```
 
-3. **Configure environment**
-
+3. **Optional: Configure environment**
+If you wanna use your own supabase database instead of mine:
    - Create a new Supabase project (hosted or self-hosted).
-   - Copy `.env.example` to `.env` and fill in the Supabase keys and URLs from your project settings.
+   - Change the values in the `.env` to your own.
+   - If you want to run webhooks on timer completion also setup the chron jobs in [here](./services/)
 
 4. **Start the development server**
 
@@ -66,31 +60,27 @@ You can either use the hosted version (fastest) or run everything locally with y
    npm run dev
    ```
 
-5. Open `http://localhost:5173` (or whatever it tells you) in your browser to access Pipemodoro.
+5. Open `http://localhost:5173` (or whatever it tells you) in your browser to access your custom Pipemodoro.
 
 ---
 
 ## Documentation
 
-Full documentation, including API reference, `curl` examples, deployment instructions, and Supabase schema details, is available at:
+For more information on how to use HTTP requests to modify timers or labels, database schema details or additional information on how to do things:
 
-> **Docs:** `https://pipemodoro-docs-url.example`
-
----
-
-## Privacy and self-hosting
-
-Pipemodoro is entirely open source. You can:
-
-- Run it locally for personal use.
-- Deploy it with your own Supabase database (hosted or self-hosted) for complete control over your data and webhooks.
-- Integrate it into existing infrastructure as a small but mighty building block in your automation pipelines.
+> **Documentation:** `https://pipemodoro-docs-url.example`
 
 ---
+
+## Core design values
+
+- **Privacy and freedom**: everything in the tech stack is open source so you can build or do anything you want freely
+- **Minimalism**: no bloat, core features that just work, nothing more, nothing less
+- **Modularity**: plug the system wherever you wish
 
 ## Additional information
 
-- This project has been made for the web development exam at the University of Pisa
+- This project has been made for a web development exam at the University of Pisa
 - It has been developed following the pomodoro technique (a sort of recursive pomodoro if you will)
 - It has been developed by listening to [this song](https://youtu.be/Fd_Ei6pxpbA?si=vuPZxq8ngztWsA3F) on repeat during the whole development (low cortisol all around)
 
