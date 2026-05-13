@@ -26,20 +26,27 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install web dependencies
+      - name: Install dependencies
         working-directory: apps/web
         run: npm ci
 
-      - name: Build web app
+      - name: Build
         working-directory: apps/web
         run: npm run build
-
-      - name: Copy docs folder
-        run: |
-          mkdir -p build/docs
-          cp -r docs/* build/docs/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
+          # Ensure this path matches where Svelte outputs your build
           path: 'apps/web/build'
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
