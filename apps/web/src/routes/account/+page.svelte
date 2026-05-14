@@ -13,6 +13,7 @@
     }
 
     const email = $derived(user?.value?.email || "")
+    const metadata = $derived(user?.value?.user_metadata)
     const timers = $derived(get_timers())
 </script>
 
@@ -29,6 +30,7 @@
     <div style="display: flex; width: 100%; gap: 1rem; justify-content: space-around;">
         <AccountDisplay
             {email}
+            {metadata}
         />
 
         <AccountStats

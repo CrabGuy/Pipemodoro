@@ -31,13 +31,13 @@
 
     const label = (timer: Timer) => timer.label
 
-    const succesful_timers = $derived(timers.filter((timer: Timer) => !timer.canceled))
-    const in_range_timers = $derived(succesful_timers.filter((timer: Timer) => new Date(timer.created_at).getTime() > Date.now() - time_period.duration))
+    const in_range_timers = $derived(timers.filter((timer: Timer) => new Date(timer.created_at).getTime() > Date.now() - time_period.duration))
+    const succesful_timers = $derived(in_range_timers.filter((timer: Timer) => !timer.canceled))
 
-    const completed_timers = $derived(timers.length)
-    const completion_rate = $derived(Math.round(in_range_timers.length / timers.length * 100) / 100 || 0)
-    const average_duration = $derived(average(in_range_timers.map(duration)))
-    const most_frequent_label = $derived(most_frequent(in_range_timers.map(label).filter((l: string | null) => l != null)))
+    const completed_timers = $derived(in_range_timers.length)
+    const completion_rate = $derived(Math.round(succesful_timers.length / in_range_timers.length * 100) / 100 || 0)
+    const average_duration = $derived(average(succesful_timers.map(duration)))
+    const most_frequent_label = $derived(most_frequent(succesful_timers.map(label).filter((l: string | null) => l != null)))
 </script>
 
 

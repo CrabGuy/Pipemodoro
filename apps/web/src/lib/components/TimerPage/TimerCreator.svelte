@@ -16,7 +16,7 @@
     const TIMER_TYPES = [
         {
             name: "Pomodoro",
-            duration: 1/3 * MINUTE
+            duration: 25 * MINUTE
         },
         {
             name: "Rest",
