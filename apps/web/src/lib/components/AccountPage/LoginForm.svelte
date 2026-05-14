@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { resolve } from '$app/paths';
     import { supabase } from '$lib/supabase_client'
 
     const { header_text } = $props()
@@ -7,7 +8,7 @@
         const { error } = await supabase.auth.signInWithOAuth({
             provider: 'google',
             options: {
-                redirectTo: window.location.origin
+                redirectTo: resolve("/account")
             }
         })
         if (error) console.error(error)
