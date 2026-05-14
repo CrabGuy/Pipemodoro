@@ -33,15 +33,25 @@ export const update = <T extends Record<string, unknown>>({column, value}: {colu
 export const select = local_database.select
 export const apply = local_database.apply
 
-function merge_values<T extends Record<string, unknown>>(local_values: local_database.Values<T>, online_values: local_database.Values<T> = []): local_database.Values<T> {
+function merge_values<T extends Record<string, unknown>>(
+    local_values: local_database.Values<T>,
+    online_values: local_database.Values<T> = []
+): local_database.Values<T> {
     const merged = new Map()
-
-    for (const item of online_values) {
-        merged.set(item.name || item.client_timer_id, item)
-    }
 
     for (const item of local_values) {
         merged.set(item.name || item.client_timer_id, item)
+    }
+
+    for (const item of online_values) {
+        const key = item.name || item.client_timer_id
+        const local_item = merged.get(key)
+
+        if (local_item) {
+            merged.set(key, { ...local_item, ...item })
+        } else {
+            merged.set(key, item)
+        }
     }
 
     return Array.from(merged.values())
