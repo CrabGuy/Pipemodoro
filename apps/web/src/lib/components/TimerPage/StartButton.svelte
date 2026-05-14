@@ -2,10 +2,11 @@
     import { create_timer } from "$lib/timers.svelte";
     import timer_play from "@ktibow/iconset-material-symbols/timer-play"
     import ControlButton from "$lib/components/TimerPage/ControlButton.svelte";
+    import { user } from "$lib/auth.svelte";
     const {timer_duration, timer_type, label} = $props()
 
     function onclick() {
-        create_timer(timer_duration, timer_type, label)
+        create_timer(user?.value?.id, timer_duration, timer_type, label)
         Notification.requestPermission()
     }
 

@@ -97,6 +97,12 @@ export const refresh_values = <T extends Record<string, unknown>>(name: string) 
         return refreshed
     }
 
+export const delete_local_values = <T extends Record<string, unknown>>(name: string) => async (database: SyncedDatabase<T>) =>
+    {
+        const empty: local_database.Values<T> = []
+        return await local_database.apply(database, local_database.set(empty))
+    }
+
 export async function create_database<T extends Record<string, unknown>>(name: string) {
     let database: SyncedDatabase<T> = $state({
         ...local_database.create_database(name),

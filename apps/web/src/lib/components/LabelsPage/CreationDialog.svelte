@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { user } from "$lib/auth.svelte";
     import { create_label } from "$lib/labels.svelte";
     import { Button, Dialog, TextFieldOutlined, snackbar } from "m3-svelte";
 
@@ -31,7 +32,7 @@
                 snackbar("Invalid name")
                 return
             }
-            create_label(new_label_name, new_label_webhook)
+            create_label(user?.value?.id, new_label_name, new_label_webhook)
             on_creation()
         }} >Create</Button>
     {/snippet}

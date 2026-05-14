@@ -1,6 +1,6 @@
 <script lang="ts">
     import { Button, Divider, Card, Icon, Dialog, TextFieldOutlined, snackbar, Snackbar } from "m3-svelte";    
-    import { get_labels, create_label, remove_label, is_updating } from "$lib/labels.svelte";
+    import { get_labels, is_updating } from "$lib/labels.svelte";
     import new_label from "@ktibow/iconset-material-symbols/new-label"
     import CreationDialog from "$lib/components/LabelsPage/CreationDialog.svelte";
     import DeletionDialog from "$lib/components/LabelsPage/DeletionDialog.svelte";
