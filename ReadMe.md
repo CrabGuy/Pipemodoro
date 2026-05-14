@@ -49,10 +49,13 @@ Here you go:
    ```
 
 3. **Optional: Configure environment**
+
 If you wanna use your own supabase database instead of mine:
    - Create a new Supabase project (hosted or self-hosted).
    - Change the values in the `.env` to your own.
    - If you want to run webhooks on timer completion also setup the chron jobs in [here](./services/)
+
+(keep in mind that if you want to enable your own account syncronization you might need to do some extra steps like setting up google as auth provider)
 
 4. **Start the development server**
 
