@@ -3,12 +3,15 @@
     import { supabase } from '$lib/supabase_client'
 
     const { header_text } = $props()
+    
+    const path = resolve("/account")
+    const redirect_url = `${window.location.origin}${path}`
 
     async function signInWithGoogle() {
         const { error } = await supabase.auth.signInWithOAuth({
             provider: 'google',
             options: {
-                redirectTo: resolve("/account")
+                redirectTo: redirect_url
             }
         })
         if (error) console.error(error)
